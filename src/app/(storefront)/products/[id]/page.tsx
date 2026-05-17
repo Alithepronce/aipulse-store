@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ShoppingCart, Check, Star, Shield, ArrowRight, ChevronDown, Loader2 } from "lucide-react"
+import { ShoppingCart, Check, Star, Shield, ArrowRight, ChevronDown, Loader2, Send } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useCart } from "@/features/cart/CartProvider"
@@ -15,6 +15,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true)
   const [added, setAdded] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
+  
+  const [reviewsList, setReviewsList] = useState<any[]>([])
+  const [reviewName, setReviewName] = useState("")
+  const [reviewRating, setReviewRating] = useState(5)
+  const [reviewComment, setReviewComment] = useState("")
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false)
+  const [reviewSuccess, setReviewSuccess] = useState(false)
 
   useEffect(() => {
     async function fetchProduct() {
@@ -40,6 +47,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           rating: data.rating || 0
         })
       }
+      
+      const { data: reviewsData } = await supabase
+        .from('product_reviews')
+        .select('*')
+        .eq('product_id', id)
+        .order('created_at', { ascending: false })
+      
+      if (reviewsData) {
+        setReviewsList(reviewsData)
+      }
+      
       setLoading(false)
     }
     fetchProduct()
@@ -50,6 +68,46 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     addItem({ ...product, quantity: 1 })
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
+  }
+
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!reviewName || reviewRating < 1 || reviewRating > 5) return
+    setIsSubmittingReview(true)
+    
+    const supabase = createClient()
+    const { error } = await supabase.from('product_reviews').insert({
+      product_id: id,
+      reviewer_name: reviewName,
+      rating: reviewRating,
+      comment: reviewComment
+    })
+    
+    if (!error) {
+      setReviewSuccess(true)
+      setReviewName("")
+      setReviewComment("")
+      setReviewRating(5)
+      
+      const { data: reviewsData } = await supabase
+        .from('product_reviews')
+        .select('*')
+        .eq('product_id', id)
+        .order('created_at', { ascending: false })
+      
+      if (reviewsData) {
+        setReviewsList(reviewsData)
+      }
+      
+      const { data } = await supabase.from('products').select('rating, review_count').eq('id', id).single()
+      if (data) {
+        setProduct((prev: any) => ({ ...prev, rating: data.rating, reviews: data.review_count }))
+      }
+      
+      setTimeout(() => setReviewSuccess(false), 3000)
+    }
+    
+    setIsSubmittingReview(false)
   }
 
   const faqs = product?.faqs || []
@@ -210,6 +268,107 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             )}
           </div>
         )}
+
+        {/* Reviews Section */}
+        <div className="border-t border-border pt-20 mt-20">
+          <h2 className="text-3xl font-bold mb-12">تقييمات العملاء</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-1">
+              <div className="glass border border-border p-6 rounded-2xl sticky top-24">
+                <h3 className="text-xl font-bold mb-6">أضف تقييمك</h3>
+                <form onSubmit={handleReviewSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-muted-foreground">الاسم</label>
+                    <input 
+                      type="text" 
+                      required 
+                      value={reviewName}
+                      onChange={(e) => setReviewName(e.target.value)}
+                      className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors" 
+                      placeholder="اسمك الكريم" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-muted-foreground">التقييم</label>
+                    <div className="flex items-center gap-2">
+                      {[1, 2, 3, 4, 5].map(star => (
+                        <button
+                          type="button"
+                          key={star}
+                          onClick={() => setReviewRating(star)}
+                          className="focus:outline-none transition-transform hover:scale-110"
+                        >
+                          <Star className={`w-8 h-8 ${star <= reviewRating ? "fill-amber-500 text-amber-500" : "fill-transparent text-muted-foreground"}`} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-muted-foreground">تعليقك (اختياري)</label>
+                    <textarea 
+                      rows={4} 
+                      value={reviewComment}
+                      onChange={(e) => setReviewComment(e.target.value)}
+                      className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors resize-none" 
+                      placeholder="ما رأيك في هذا المنتج؟" 
+                    />
+                  </div>
+                  <button 
+                    type="submit" 
+                    disabled={isSubmittingReview || !reviewName}
+                    className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                  >
+                    {isSubmittingReview ? <Loader2 className="w-5 h-5 animate-spin" /> : (reviewSuccess ? <Check className="w-5 h-5" /> : <Send className="w-5 h-5" />)}
+                    {isSubmittingReview ? "جاري الإرسال..." : (reviewSuccess ? "شكراً لتقييمك!" : "إرسال التقييم")}
+                  </button>
+                </form>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-2 space-y-6">
+              {reviewsList.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground bg-secondary/20 rounded-2xl border border-border border-dashed">
+                  <Star className="w-12 h-12 mb-4 opacity-20" />
+                  <p>لا توجد تقييمات بعد. كن أول من يقيّم هذا المنتج!</p>
+                </div>
+              ) : (
+                reviewsList.map(review => (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    key={review.id} 
+                    className="p-6 rounded-2xl bg-secondary/30 border border-border"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xl">
+                          {review.reviewer_name.charAt(0)}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-lg">{review.reviewer_name}</h4>
+                          <div className="flex items-center text-amber-500 mt-1">
+                            {[1, 2, 3, 4, 5].map(star => (
+                              <Star key={star} className={`w-4 h-4 ${star <= review.rating ? "fill-current" : "fill-transparent text-muted-foreground"}`} />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-sm text-muted-foreground">
+                        {new Date(review.created_at).toLocaleDateString('ar-IQ')}
+                      </span>
+                    </div>
+                    {review.comment && (
+                      <p className="text-muted-foreground leading-relaxed mt-4 bg-background/50 p-4 rounded-xl border border-border/50">
+                        {review.comment}
+                      </p>
+                    )}
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
