@@ -3,9 +3,61 @@
 import React from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Target, Zap, GraduationCap, Code, BookOpen, Award, Mail, Cpu, FlaskConical, BrainCircuit, Megaphone, TrendingUp, PenTool, Share2 } from "lucide-react"
+import { Target, Zap, GraduationCap, Code, BookOpen, Award, Mail, Cpu, FlaskConical, BrainCircuit, Megaphone, TrendingUp, PenTool, Share2, Star, X, ChevronLeft, ChevronRight } from "lucide-react"
+import { useState } from "react"
+
+const certificates = [
+  {
+    src: "/certificates/cert-1-cambridge-lens26.jpeg",
+    title: "شهادة مشاركة — مؤتمر LENS 26",
+    subtitle: "Cambridge Energy Nexus 2026 | كامبريدج، إنجلترا",
+    category: "مؤتمرات دولية",
+    color: "from-blue-500 to-indigo-600",
+  },
+  {
+    src: "/certificates/cert-2-american-university.jpeg",
+    title: "دبلوم الذكاء الاصطناعي",
+    subtitle: "The American University of Science — Oregon, USA",
+    category: "شهادات أكاديمية",
+    color: "from-red-500 to-rose-600",
+  },
+  {
+    src: "/certificates/cert-3-ai-diploma-part1.jpeg",
+    title: "دبلوم الذكاء الاصطناعي — الجزء الأول",
+    subtitle: "مركز التدريب التكنولوجي | 60 ساعة تدريبية | تقدير ممتاز",
+    category: "شهادات تدريبية",
+    color: "from-amber-500 to-orange-600",
+  },
+  {
+    src: "/certificates/cert-4-ai-python.jpeg",
+    title: "شهادة Python في دبلوم الذكاء الاصطناعي",
+    subtitle: "مركز التدريب التكنولوجي | 60 ساعة | تقدير ممتاز",
+    category: "شهادات تدريبية",
+    color: "from-green-500 to-emerald-600",
+  },
+  {
+    src: "/certificates/cert-5-experience.jpeg",
+    title: "شهادة خبرة — مهندسة تعلم آلي",
+    subtitle: "مركز التدريب التكنولوجي | Junior Machine Learning Engineer",
+    category: "شهادات خبرة",
+    color: "from-violet-500 to-purple-600",
+  },
+  {
+    src: "/certificates/cert-6-achievements.jpeg",
+    title: "شهادة تميّز — دبلوم الذكاء الاصطناعي",
+    subtitle: "تقدير لتحقيق العلامة الكاملة في امتحان دبلوم الذكاء الاصطناعي",
+    category: "شهادات تميّز",
+    color: "from-yellow-500 to-amber-600",
+  },
+]
 
 export default function AboutPage() {
+  const [lightbox, setLightbox] = useState<number | null>(null)
+
+  const openLightbox = (idx: number) => setLightbox(idx)
+  const closeLightbox = () => setLightbox(null)
+  const prevCert = () => setLightbox(prev => prev !== null ? (prev - 1 + certificates.length) % certificates.length : null)
+  const nextCert = () => setLightbox(prev => prev !== null ? (prev + 1) % certificates.length : null)
   const team = [
     { 
       name: "د. فريال إبراهيم جبار الظفيري", 
@@ -254,9 +306,155 @@ export default function AboutPage() {
           </motion.div>
         </div>
 
+        {/* ===== Certificates Section ===== */}
+        <div className="mt-32 mb-10">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-sm text-amber-500 mb-6"
+            >
+              <Star className="w-4 h-4 fill-amber-500" />
+              <span>شهادات وتقديرات عالمية</span>
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold mb-4"
+            >
+              شهادات د. فريال إبراهيم جبار
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-muted-foreground text-lg leading-relaxed"
+            >
+              مجموعة من الشهادات والتقديرات الدولية والأكاديمية المعتمدة التي تعكس مسيرة علمية حافلة بالتميّز والإنجاز
+            </motion.p>
+          </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {certificates.map((cert, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group cursor-pointer"
+                onClick={() => openLightbox(i)}
+              >
+                <div className="glass-panel rounded-2xl overflow-hidden hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-500">
+                  {/* Category badge */}
+                  <div className="px-4 pt-4">
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${cert.color} text-white`}>
+                      <Award className="w-3 h-3" />
+                      {cert.category}
+                    </span>
+                  </div>
+
+                  {/* Certificate image */}
+                  <div className="relative mx-4 mt-3 rounded-xl overflow-hidden aspect-[4/3] bg-secondary/30">
+                    <Image
+                      src={cert.src}
+                      alt={cert.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 backdrop-blur-sm rounded-full p-3">
+                        <Star className="w-6 h-6 text-white fill-white" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Info */}
+                  <div className="p-4">
+                    <h3 className="font-bold text-base mb-1 leading-snug">{cert.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{cert.subtitle}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Click to expand hint */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center text-sm text-muted-foreground mt-8"
+          >
+            اضغط على أي شهادة لعرضها بالحجم الكامل
+          </motion.p>
+        </div>
 
       </div>
+
+      {/* ===== Lightbox ===== */}
+      {lightbox !== null && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          onClick={closeLightbox}
+        >
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Prev */}
+          <button
+            onClick={(e) => { e.stopPropagation(); prevCert() }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Next */}
+          <button
+            onClick={(e) => { e.stopPropagation(); nextCert() }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* Image container */}
+          <motion.div
+            key={lightbox}
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="relative max-w-3xl w-full max-h-[85vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src={certificates[lightbox].src}
+                alt={certificates[lightbox].title}
+                className="w-full max-h-[75vh] object-contain bg-black"
+              />
+            </div>
+            {/* Caption */}
+            <div className="text-center mt-4">
+              <p className="text-white font-bold text-lg">{certificates[lightbox].title}</p>
+              <p className="text-white/60 text-sm mt-1">{certificates[lightbox].subtitle}</p>
+              <p className="text-white/40 text-xs mt-2">{lightbox + 1} / {certificates.length}</p>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   )
 }
