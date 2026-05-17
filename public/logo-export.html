@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Logo Export</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      background: transparent;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 40px;
+    }
+    .logo-mark {
+      width: 120px;
+      height: 120px;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .arabic-name {
+      font-size: 42px;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+    }
+    .english-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #6366f1;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container" id="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="50%" stop-color="#8b5cf6" />
+            <stop offset="100%" stop-color="#06b6d4" />
+          </linearGradient>
+          <linearGradient id="pulseGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stop-color="#a78bfa" />
+            <stop offset="100%" stop-color="#22d3ee" />
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <!-- Background circle -->
+        <circle cx="40" cy="40" r="38" fill="url(#logoGrad)" opacity="0.08" />
+        <circle cx="40" cy="40" r="38" stroke="url(#logoGrad)" stroke-width="2" opacity="0.3" />
+        <!-- Left hemisphere -->
+        <path d="M28 28C28 28 24 32 24 40C24 48 28 52 28 52" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M22 34C22 34 20 37 20 40C20 43 22 46 22 46" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <!-- Right hemisphere -->
+        <path d="M52 28C52 28 56 32 56 40C56 48 52 52 52 52" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M58 34C58 34 60 37 60 40C60 43 58 46 58 46" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <!-- Pulse line -->
+        <path d="M16 40 L30 40 L34 28 L38 52 L42 24 L46 48 L50 40 L64 40" stroke="url(#pulseGrad)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#glow)"/>
+        <!-- Neural nodes -->
+        <circle cx="34" cy="28" r="2.5" fill="#8b5cf6" opacity="0.9" />
+        <circle cx="42" cy="24" r="2.5" fill="#6366f1" opacity="0.9" />
+        <circle cx="38" cy="52" r="2.5" fill="#06b6d4" opacity="0.9" />
+        <circle cx="46" cy="48" r="2.5" fill="#22d3ee" opacity="0.9" />
+        <!-- Center dot -->
+        <circle cx="40" cy="40" r="3" fill="url(#logoGrad)" />
+        <circle cx="40" cy="40" r="5" stroke="url(#logoGrad)" stroke-width="1" opacity="0.3" />
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="arabic-name">نبض الذكاء</span>
+      <span class="english-name">AI PULSE</span>
+    </div>
+  </div>
+</body>
+</html>
