@@ -37,9 +37,9 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-6 text-sm uppercase tracking-wider">قانوني</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">الشروط والأحكام</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">سياسة الخصوصية</Link></li>
-              <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">سياسة الاسترجاع</Link></li>
+              <li><Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">الشروط والأحكام</Link></li>
+              <li><Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">سياسة الخصوصية</Link></li>
+              <li><Link href="/refund" className="text-muted-foreground hover:text-primary transition-colors">سياسة الاسترجاع</Link></li>
             </ul>
           </div>
 
