@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
     const validationError = validateRequired(body, ["title", "price"])
     if (validationError) return apiError(validationError)
 
-    const { title, description, price, category, cover_image, file_url, is_active } = body
+    const { title, description, price, category, cover_image, file_url, is_active, rating, review_count } = body
 
     // Validate category
     const validCategories = ["كورسات أونلاين", "كتب إلكترونية", "برامج"]
@@ -86,6 +86,8 @@ export async function POST(req: NextRequest) {
         category: category || null,
         cover_image: cover_image || null,
         file_url: file_url || null,
+        rating: rating !== undefined ? Number(rating) : 0,
+        review_count: review_count !== undefined ? Number(review_count) : 0,
         is_active: is_active !== false,
       })
       .select()

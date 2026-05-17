@@ -36,8 +36,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           image: data.cover_image || "/course.png",
           features: data.features || [],
           faqs: data.faqs || [],
-          reviews: Math.floor(Math.random() * 200) + 50,
-          rating: 4.8
+          reviews: data.review_count || 0,
+          rating: data.rating || 0
         })
       }
       setLoading(false)
@@ -108,11 +108,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center text-amber-500">
-                  <Star className="w-4 h-4 fill-current" />
-                  <Star className="w-4 h-4 fill-current" />
-                  <Star className="w-4 h-4 fill-current" />
-                  <Star className="w-4 h-4 fill-current" />
-                  <Star className="w-4 h-4 fill-current" />
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} className={`w-4 h-4 ${star <= Math.round(product.rating || 0) ? "fill-current" : "fill-transparent text-muted-foreground"}`} />
+                  ))}
                 </div>
                 <span className="text-sm font-medium">{product.rating}</span>
                 <span className="text-sm text-muted-foreground">({product.reviews} تقييم)</span>

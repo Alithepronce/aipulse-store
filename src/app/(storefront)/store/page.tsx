@@ -31,6 +31,8 @@ export default function StorePage() {
           category: p.category,
           description: p.description || "",
           image: p.cover_image,
+          rating: p.rating || 0,
+          review_count: p.review_count || 0,
           badge: p.created_at > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() ? "جديد" : undefined
         }))
         setProducts(formattedProducts)

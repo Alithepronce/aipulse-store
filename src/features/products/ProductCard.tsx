@@ -2,13 +2,13 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import { ShoppingCart } from "lucide-react"
+import { ShoppingCart, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useCart, CartItem } from "@/features/cart/CartProvider"
 
 interface ProductCardProps {
-  product: CartItem & { description: string; badge?: string; image?: string }
+  product: CartItem & { description: string; badge?: string; image?: string; rating?: number; review_count?: number }
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -53,6 +53,15 @@ export default function ProductCard({ product }: ProductCardProps) {
           </Link>
           <span className="font-bold text-lg whitespace-nowrap text-emerald-600 dark:text-emerald-400">{product.price.toLocaleString("ar-IQ")} د.ع</span>
         </div>
+        {(product.rating !== undefined && product.review_count !== undefined && product.review_count > 0) && (
+          <div className="flex items-center gap-1 mb-3">
+            <div className="flex items-center text-amber-500">
+              <Star className="w-4 h-4 fill-current" />
+            </div>
+            <span className="text-sm font-medium">{product.rating}</span>
+            <span className="text-sm text-muted-foreground">({product.review_count})</span>
+          </div>
+        )}
         <p className="text-sm text-muted-foreground mb-6 line-clamp-2 flex-grow">
           {product.description}
         </p>

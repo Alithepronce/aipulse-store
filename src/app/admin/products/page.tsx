@@ -16,6 +16,8 @@ interface Product {
   is_published: boolean
   created_at: string
   sales_count?: number
+  rating?: number
+  review_count?: number
 }
 
 interface ProductForm {
@@ -26,6 +28,8 @@ interface ProductForm {
   cover_image: string
   file_url: string
   is_active: boolean
+  rating: string
+  review_count: string
 }
 
 const emptyForm: ProductForm = {
@@ -36,6 +40,8 @@ const emptyForm: ProductForm = {
   cover_image: "",
   file_url: "",
   is_active: true,
+  rating: "0",
+  review_count: "0",
 }
 
 const categories = ["كورسات أونلاين", "كتب إلكترونية", "برامج"]
@@ -100,6 +106,8 @@ export default function AdminProductsPage() {
       cover_image: product.cover_image || "",
       file_url: product.file_url || "",
       is_active: product.is_active ?? true,
+      rating: product.rating?.toString() || "0",
+      review_count: product.review_count?.toString() || "0",
     })
     setCoverFile(null)
     setCoverPreview(product.cover_image || null)
@@ -142,6 +150,8 @@ export default function AdminProductsPage() {
         cover_image: coverImageUrl || null,
         file_url: form.file_url.trim() || null,
         is_active: form.is_active,
+        rating: Number(form.rating),
+        review_count: Number(form.review_count),
       }
 
       let res: Response
@@ -355,6 +365,36 @@ export default function AdminProductsPage() {
                       <option key={cat} value={cat}>{cat}</option>
                     ))}
                   </select>
+                </div>
+              </div>
+
+              {/* Rating & Review Count */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">التقييم من 5</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="5"
+                    value={form.rating}
+                    onChange={(e) => setForm(prev => ({ ...prev, rating: e.target.value }))}
+                    placeholder="4.5"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
+                    dir="ltr"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">عدد المراجعات</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={form.review_count}
+                    onChange={(e) => setForm(prev => ({ ...prev, review_count: e.target.value }))}
+                    placeholder="120"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
+                    dir="ltr"
+                  />
                 </div>
               </div>
 

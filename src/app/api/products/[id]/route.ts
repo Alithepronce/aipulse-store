@@ -21,6 +21,8 @@ export async function PATCH(
     if (body.cover_image !== undefined) updateData.cover_image = body.cover_image
     if (body.file_url !== undefined) updateData.file_url = body.file_url
     if (body.is_active !== undefined) updateData.is_active = body.is_active
+    if (body.rating !== undefined) updateData.rating = Number(body.rating)
+    if (body.review_count !== undefined) updateData.review_count = Number(body.review_count)
 
     const supabase = await createClient()
     const { data, error } = await supabase.from("products").update(updateData).eq("id", id).select().single()

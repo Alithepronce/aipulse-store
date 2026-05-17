@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS products (
   category TEXT CHECK (category IN ('كورسات أونلاين', 'كتب إلكترونية', 'برامج')),
   cover_image TEXT,
   file_url TEXT,
+  rating NUMERIC(3, 2) DEFAULT 0.00,
+  review_count INTEGER DEFAULT 0,
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
