@@ -200,7 +200,7 @@ export default function Home() {
   const calculatedSavings = Math.round(monthlySales * productPrice * 0.08) // Save 8% compared to Gumroad/Teachable
 
   return (
-    <div className="flex flex-col min-h-screen bg-black relative">
+    <div className="flex flex-col min-h-screen bg-background text-foreground relative">
       {/* Background Decorative Grid */}
       <div className="absolute inset-0 bg-grid opacity-[0.4] pointer-events-none z-0" />
       
@@ -222,14 +222,14 @@ export default function Home() {
                 animate="visible"
                 className="flex flex-col text-right lg:col-span-7"
               >
-                <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 w-fit mb-6">
-                  <Sparkles className="w-3.5 h-3.5 text-white" />
+                <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary border border-border w-fit mb-6">
+                  <Sparkles className="w-3.5 h-3.5 text-primary" />
                   <span className="text-xs font-semibold text-foreground/80">النسخة التفاعلية الفخمة 2.0 أصبحت جاهزة</span>
                 </motion.div>
                 
-                <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl tracking-tight mb-6 leading-[1.05] font-serif font-normal text-white">
+                <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl tracking-tight mb-6 leading-[1.05] font-serif font-normal text-foreground">
                   ارتقِ بعملك مع <br/>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground via-foreground/80 to-foreground/40">
                     محتوى رقمي مبتكر
                   </span>
                 </motion.h1>
@@ -240,13 +240,13 @@ export default function Home() {
                 
                 <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
                   <MagneticWrapper>
-                    <Link href="/store" className="px-8 py-3.5 rounded-xl bg-white text-black font-bold hover:bg-white/95 transition-all flex items-center justify-center gap-2 group w-full text-sm shadow-md shadow-white/5">
+                    <Link href="/store" className="px-8 py-3.5 rounded-xl bg-foreground text-background font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 group w-full text-sm shadow-md shadow-foreground/5">
                       <span>تصفح المتجر المميز</span>
                       <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                     </Link>
                   </MagneticWrapper>
                   <MagneticWrapper>
-                    <Link href="/about" className="px-8 py-3.5 rounded-xl bg-white/5 border border-white/[0.08] hover:bg-white/10 text-white font-bold transition-all flex items-center justify-center w-full text-sm">
+                    <Link href="/about" className="px-8 py-3.5 rounded-xl bg-secondary/50 border border-border hover:bg-secondary text-foreground font-bold transition-all flex items-center justify-center w-full text-sm">
                       فلسفتنا في التصميم
                     </Link>
                   </MagneticWrapper>
@@ -262,21 +262,21 @@ export default function Home() {
               >
                 <div className="relative aspect-square w-full max-w-md mx-auto">
                   {/* 3D-like floating composition */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent rounded-3xl transform rotate-6 scale-105 border border-white/5 backdrop-blur-xl"></div>
-                  <div className="absolute inset-0 bg-[#060608]/90 rounded-3xl border border-white/[0.08] overflow-hidden flex flex-col shadow-2xl">
-                     <div className="h-10 border-b border-white/[0.06] bg-[#0c0c0e]/80 flex items-center px-4 gap-2">
-                       <div className="w-2.5 h-2.5 rounded-full bg-white/20"></div>
-                       <div className="w-2.5 h-2.5 rounded-full bg-white/10"></div>
-                       <div className="w-2.5 h-2.5 rounded-full bg-white/5"></div>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-foreground/10 to-transparent rounded-3xl transform rotate-6 scale-105 border border-border backdrop-blur-xl"></div>
+                  <div className="absolute inset-0 bg-card/90 rounded-3xl border border-border overflow-hidden flex flex-col shadow-2xl">
+                     <div className="h-10 border-b border-border bg-secondary/80 flex items-center px-4 gap-2">
+                       <div className="w-2.5 h-2.5 rounded-full bg-foreground/20"></div>
+                       <div className="w-2.5 h-2.5 rounded-full bg-foreground/10"></div>
+                       <div className="w-2.5 h-2.5 rounded-full bg-foreground/5"></div>
                      </div>
-                     <div className="flex-1 relative bg-white/[0.02] p-8">
-                        <div className="absolute right-8 top-8 w-36 h-48 bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/10 rotate-12 shadow-xl backdrop-blur-md z-10 flex items-center justify-center overflow-hidden">
+                     <div className="flex-1 relative bg-transparent p-8">
+                        <div className="absolute right-8 top-8 w-36 h-48 bg-gradient-to-br from-foreground/10 to-foreground/5 rounded-xl border border-border rotate-12 shadow-xl backdrop-blur-md z-10 flex items-center justify-center overflow-hidden">
                            <Image src="/book.png" alt="كتاب إلكتروني" fill className="object-cover opacity-80" />
                         </div>
-                        <div className="absolute left-10 bottom-10 w-56 h-36 bg-gradient-to-br from-white/5 to-transparent rounded-xl border border-white/10 -rotate-6 shadow-2xl backdrop-blur-md z-20 flex items-center justify-center overflow-hidden">
+                        <div className="absolute left-10 bottom-10 w-56 h-36 bg-gradient-to-br from-foreground/5 to-transparent rounded-xl border border-border -rotate-6 shadow-2xl backdrop-blur-md z-20 flex items-center justify-center overflow-hidden">
                            <Image src="/course.png" alt="كورس" fill className="object-cover opacity-80" />
                         </div>
-                        <div className="absolute right-24 bottom-24 w-16 h-16 bg-black rounded-2xl border border-white/[0.08] rotate-45 shadow-lg flex items-center justify-center z-30 hover:scale-105 transition-transform cursor-none">
+                        <div className="absolute right-24 bottom-24 w-16 h-16 bg-background rounded-2xl border border-border rotate-45 shadow-lg flex items-center justify-center z-30 hover:scale-105 transition-transform cursor-pointer">
                           <LogoMark sizeClass="w-8 h-8" />
                         </div>
                      </div>
@@ -294,10 +294,10 @@ export default function Home() {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
             <div className="max-w-2xl text-right">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">أرقى المختارات الرقمية</h2>
+              <h2 className="text-3xl md:text-4xl font-serif text-foreground mb-4">أرقى المختارات الرقمية</h2>
               <p className="text-muted-foreground text-sm">تصفح أحدث إضافاتنا من المنتجات المنسقة بدقة والمصممة لتسريع وتيرة نموك.</p>
             </div>
-            <Link href="/store" className="text-white text-sm font-semibold hover:underline mt-4 md:mt-0 flex items-center gap-2 group">
+            <Link href="/store" className="text-foreground text-sm font-semibold hover:underline mt-4 md:mt-0 flex items-center gap-2 group">
               <span>عرض المتجر الكامل</span>
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             </Link>
@@ -306,14 +306,14 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {isLoading
               ? Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="flex flex-col space-y-4 bg-[#0a0a0c] p-6 rounded-2xl border border-white/[0.04]">
-                    <Skeleton className="h-48 w-full rounded-xl bg-white/5" />
+                  <div key={i} className="flex flex-col space-y-4 bg-card p-6 rounded-2xl border border-border">
+                    <Skeleton className="h-48 w-full rounded-xl bg-secondary" />
                     <div className="space-y-2">
-                      <Skeleton className="h-5 w-2/3 bg-white/5" />
-                      <Skeleton className="h-4 w-full bg-white/5" />
-                      <Skeleton className="h-4 w-4/5 bg-white/5" />
+                      <Skeleton className="h-5 w-2/3 bg-secondary" />
+                      <Skeleton className="h-4 w-full bg-secondary" />
+                      <Skeleton className="h-4 w-4/5 bg-secondary" />
                     </div>
-                    <Skeleton className="h-10 w-full mt-4 bg-white/5" />
+                    <Skeleton className="h-10 w-full mt-4 bg-secondary" />
                   </div>
                 ))
               : featuredProducts.map((product, i) => (
@@ -333,10 +333,10 @@ export default function Home() {
       </section>
 
       {/* Interactive Bento Box Features Section */}
-      <section className="py-24 border-t border-white/[0.06] bg-gradient-to-b from-black to-[#050508] relative z-20">
+      <section className="py-24 border-t border-border bg-gradient-to-b from-background to-secondary/30 relative z-20">
         <div className="container px-6 mx-auto max-w-7xl">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">نظام عمل تفاعلي متطور</h2>
+            <h2 className="text-3xl md:text-4xl font-serif text-foreground mb-4">نظام عمل تفاعلي متطور</h2>
             <p className="text-sm text-muted-foreground">
               بوابة متكاملة تدعم تجربة تفاعلية ذكية من الجلب الفوري للملفات، مروراً بالتحقق التلقائي والشفافية التقنية.
             </p>
@@ -347,7 +347,7 @@ export default function Home() {
             {/* Bento Block 1: Interactive Download Speed Simulator (Spans 2 columns, 2 rows) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              className="lg:col-span-2 lg:row-span-2 rounded-3xl border border-white/[0.06] bg-[#06060a]/80 p-8 hover:border-white/15 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
+              className="lg:col-span-2 lg:row-span-2 rounded-3xl border border-border bg-card/85 p-8 hover:border-foreground/10 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
             >
               <div className="absolute -top-12 -right-12 w-48 h-48 glow-green rounded-full blur-[80px] opacity-40 pointer-events-none"></div>
               
@@ -359,7 +359,7 @@ export default function Home() {
                   <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">اختبار السرعة المدمج</span>
                 </div>
                 
-                <h3 className="text-2xl font-bold mb-3 text-white">تحميل فوري عبر شبكة سحابية فائقة</h3>
+                <h3 className="text-2xl font-bold mb-3 text-foreground">تحميل فوري عبر شبكة سحابية فائقة</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
                   يتم تسليم الملفات الرقمية عبر شبكات CDN عالمية موزعة لضمان أقصى سرعة تحميل. اختر نوع شبكتك لتجربة السرعة الفعلية للملف بحجم **1 جيجابايت**:
                 </p>
@@ -373,7 +373,7 @@ export default function Home() {
                       className={`py-2 px-1 text-center rounded-lg border text-[11px] font-bold transition-all duration-200 ${
                         speedOption === opt
                           ? "bg-emerald-500/10 border-emerald-500 text-emerald-400 shadow-lg shadow-emerald-500/5"
-                          : "bg-white/[0.02] border-white/[0.06] text-muted-foreground hover:text-white"
+                          : "bg-secondary/50 border-border text-muted-foreground hover:text-foreground"
                       }`}
                     >
                       {opt.toUpperCase()}
@@ -381,14 +381,14 @@ export default function Home() {
                   ))}
                 </div>
 
-                <div className="bg-black/50 border border-white/[0.04] p-4 rounded-xl mt-4 flex items-center justify-between">
+                <div className="bg-secondary/30 border border-border p-4 rounded-xl mt-4 flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">السرعة المتوقعة:</span>
-                  <span className="text-xs font-bold text-white">{speedConfigs[speedOption].speed}</span>
+                  <span className="text-xs font-bold text-foreground">{speedConfigs[speedOption].speed}</span>
                 </div>
 
-                <div className="bg-black/50 border border-white/[0.04] p-4 rounded-xl mt-2 flex items-center justify-between">
+                <div className="bg-secondary/30 border border-border p-4 rounded-xl mt-2 flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">زمن التحميل المقدر:</span>
-                  <span className="text-xs font-bold text-white">{speedConfigs[speedOption].time}</span>
+                  <span className="text-xs font-bold text-foreground">{speedConfigs[speedOption].time}</span>
                 </div>
               </div>
               
@@ -397,13 +397,13 @@ export default function Home() {
                 <button
                   onClick={handleStartDownload}
                   disabled={isDownloading}
-                  className="w-full py-2.5 rounded-xl bg-white hover:bg-white/95 text-black font-bold text-xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-2.5 rounded-xl bg-foreground text-background hover:opacity-90 font-bold text-xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   <Zap className="w-3.5 h-3.5 fill-current" />
                   {isDownloading ? "جاري محاكاة التحميل..." : "ابدأ محاكاة التحميل"}
                 </button>
 
-                <div className="relative h-1.5 w-full bg-white/10 rounded-full mt-4 overflow-hidden">
+                <div className="relative h-1.5 w-full bg-secondary rounded-full mt-4 overflow-hidden">
                   <motion.div
                     className="absolute top-0 right-0 h-full bg-emerald-400"
                     animate={{ width: `${downloadProgress}%` }}
@@ -420,7 +420,7 @@ export default function Home() {
             {/* Bento Block 2: Interactive API Console (Spans 2 columns, 1 row) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-              className="lg:col-span-2 lg:row-span-1 rounded-3xl border border-white/[0.06] bg-[#06060a]/80 p-8 hover:border-white/15 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
+              className="lg:col-span-2 lg:row-span-1 rounded-3xl border border-border bg-card/85 p-8 hover:border-foreground/10 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
             >
               <div className="absolute -bottom-12 -left-12 w-48 h-48 glow-blue rounded-full blur-[80px] opacity-30 pointer-events-none"></div>
               
@@ -432,7 +432,7 @@ export default function Home() {
                     </div>
                     <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">كونسول الربط للمطورين</span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-white">سهولة دمج المنتجات برمجياً</h3>
+                  <h3 className="text-xl font-bold mb-2 text-foreground">سهولة دمج المنتجات برمجياً</h3>
                   <p className="text-muted-foreground text-xs leading-relaxed max-w-sm">
                     هل ترغب بدمج منتجاتك بقاعدة بياناتك؟ نوفر واجهة برمجية API قوية وسهلة الاستخدام للمطورين لجلب الملفات لحظياً.
                   </p>
@@ -451,7 +451,7 @@ export default function Home() {
                         className={`px-3 py-1 rounded-lg border text-[10px] font-mono transition-all duration-200 ${
                           activeLang === tab.id
                             ? "bg-blue-500/10 border-blue-500 text-blue-400"
-                            : "bg-white/[0.02] border-white/[0.06] text-muted-foreground hover:text-white"
+                            : "bg-secondary/50 border-border text-muted-foreground hover:text-foreground"
                         }`}
                       >
                         {tab.label}
@@ -461,14 +461,14 @@ export default function Home() {
                 </div>
 
                 {/* Simulated IDE Terminal */}
-                <div className="w-full md:w-80 bg-black border border-white/[0.08] rounded-xl overflow-hidden font-mono text-[10px] text-right flex flex-col h-40">
-                  <div className="bg-[#0b0b0d] px-3 py-1.5 border-b border-white/[0.06] flex items-center gap-1">
+                <div className="w-full md:w-80 bg-background border border-border rounded-xl overflow-hidden font-mono text-[10px] text-right flex flex-col h-40">
+                  <div className="bg-secondary px-3 py-1.5 border-b border-border flex items-center gap-1">
                     <div className="w-2 h-2 rounded-full bg-red-500/40"></div>
                     <div className="w-2 h-2 rounded-full bg-yellow-500/40"></div>
                     <div className="w-2 h-2 rounded-full bg-green-500/40"></div>
                     <span className="text-[9px] text-muted-foreground mr-auto">aipulse_api.sh</span>
                   </div>
-                  <div className="p-3 flex-1 overflow-y-auto text-left text-white/90 whitespace-pre-wrap select-all cursor-text leading-normal scrollbar-none" dir="ltr">
+                  <div className="p-3 flex-1 overflow-y-auto text-left text-foreground/90 whitespace-pre-wrap select-all cursor-text leading-normal scrollbar-none" dir="ltr">
                     {terminalOutput}
                     {isTyping && <span className="animate-pulse inline-block w-1.5 h-3.5 bg-blue-400 ml-1">|</span>}
                   </div>
@@ -479,7 +479,7 @@ export default function Home() {
             {/* Bento Box 3: ROI Calculator (Spans 1 column, 1 row) */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-              className="lg:col-span-1 lg:row-span-1 rounded-3xl border border-white/[0.06] bg-[#06060a]/80 p-6 hover:border-white/15 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
+              className="lg:col-span-1 lg:row-span-1 rounded-3xl border border-border bg-card/85 p-6 hover:border-foreground/10 transition-all duration-300 flex flex-col justify-between relative overflow-hidden"
             >
               <div className="absolute -bottom-12 -right-12 w-36 h-36 glow-orange rounded-full blur-[60px] opacity-30 pointer-events-none"></div>
               
@@ -488,7 +488,7 @@ export default function Home() {
                   <Calculator className="w-4 h-4 text-orange-400" />
                   <span className="text-[10px] font-semibold text-orange-400 uppercase tracking-wider">حاسبة التوفير الرقمية</span>
                 </div>
-                <h3 className="text-base font-bold mb-2 text-white">احسب نسبة أرباحك</h3>
+                <h3 className="text-base font-bold mb-2 text-foreground">احسب نسبة أرباحك</h3>
                 <p className="text-muted-foreground text-[11px] leading-relaxed mb-4">
                   توفير 8% من العمولات مقارنة بالمنصات الأخرى التي تفرض رسوماً إضافية مرتفعة:
                 </p>
@@ -497,7 +497,7 @@ export default function Home() {
                   <div>
                     <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
                       <span>معدل المبيعات شهرياً:</span>
-                      <span className="text-white font-bold">{monthlySales} مبيعة</span>
+                      <span className="text-foreground font-bold">{monthlySales} مبيعة</span>
                     </div>
                     <input
                       type="range"
@@ -505,14 +505,14 @@ export default function Home() {
                       max="1000"
                       value={monthlySales}
                       onChange={(e) => setMonthlySales(Number(e.target.value))}
-                      className="w-full accent-orange-500 bg-white/10 h-1 rounded-lg cursor-pointer"
+                      className="w-full accent-orange-500 bg-secondary h-1 rounded-lg cursor-pointer"
                     />
                   </div>
 
                   <div>
                     <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
                       <span>متوسط سعر المنتج:</span>
-                      <span className="text-white font-bold">{productPrice.toLocaleString()} د.ع</span>
+                      <span className="text-foreground font-bold">{productPrice.toLocaleString()} د.ع</span>
                     </div>
                     <input
                       type="range"
@@ -521,13 +521,13 @@ export default function Home() {
                       step="5000"
                       value={productPrice}
                       onChange={(e) => setProductPrice(Number(e.target.value))}
-                      className="w-full accent-orange-500 bg-white/10 h-1 rounded-lg cursor-pointer"
+                      className="w-full accent-orange-500 bg-secondary h-1 rounded-lg cursor-pointer"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-white/[0.04]">
+              <div className="mt-4 pt-3 border-t border-border">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] text-muted-foreground">التوفير السنوي الصافي:</span>
                   <span className="text-xs font-bold text-orange-400">{calculatedSavings.toLocaleString()} د.ع</span>
@@ -539,18 +539,18 @@ export default function Home() {
             <Link href="/store" className="lg:col-span-1 lg:row-span-1 block h-full w-full">
               <motion.div 
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-                className="h-full bg-white rounded-3xl p-8 text-black flex flex-col justify-between items-center text-center group overflow-hidden relative cursor-none hover:shadow-xl hover:shadow-white/5 transition-all duration-300 min-h-[220px]"
+                className="h-full bg-foreground rounded-3xl p-8 text-background flex flex-col justify-between items-center text-center group overflow-hidden relative cursor-pointer hover:shadow-xl transition-all duration-300 min-h-[220px]"
               >
-                 <div className="absolute inset-0 bg-neutral-100 translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-500 rounded-3xl z-0"></div>
+                 <div className="absolute inset-0 bg-foreground/90 translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-500 rounded-3xl z-0"></div>
                  
                  <div className="relative z-10 w-full h-full flex flex-col justify-between items-center">
-                   <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center">
-                     <Sparkles className="w-6 h-6 text-black" />
+                   <div className="w-12 h-12 rounded-full bg-background/10 flex items-center justify-center">
+                     <Sparkles className="w-6 h-6 text-background" />
                    </div>
                    
                    <div>
                      <h3 className="text-xl font-bold mb-1 font-serif">اكتشف الإمكانيات</h3>
-                     <p className="text-neutral-500 text-[10px] max-w-[150px] mx-auto leading-normal">ادخل لمتجرنا لتجربة معينات المنتجات الرقمية.</p>
+                     <p className="text-background/70 text-[10px] max-w-[150px] mx-auto leading-normal">ادخل لمتجرنا لتجربة معينات المنتجات الرقمية.</p>
                    </div>
                    
                    <div className="flex items-center gap-1.5 text-xs font-bold">
