@@ -11,6 +11,8 @@ interface OrderDetail {
   status: "pending" | "approved" | "rejected"
   total_amount: number
   created_at: string
+  payment_method: string
+  payment_receipt_url: string | null
   profiles: {
     full_name: string
     email: string
@@ -53,6 +55,43 @@ export default function AdminOrderDetail({ params }: { params: Promise<{ id: str
   const [file, setFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const [rejectionNotes, setRejectionNotes] = useState("")
+  const [showRejectionForm, setShowRejectionForm] = useState(false)
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false)
+
+  const paymentLabels: Record<string, string> = {
+    zaincash: "زين كاش",
+    fastpay: "فاست باي",
+    fib: "FIB",
+    mastercard: "ماستركارد",
+  }
+
+  const handleUpdateStatus = async (newStatus: "approved" | "rejected") => {
+    setIsUpdatingStatus(true)
+    try {
+      const res = await fetch(`/api/orders/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status: newStatus,
+          admin_notes: newStatus === "rejected" ? rejectionNotes : undefined
+        })
+      })
+      const json = await res.json()
+      if (json.success) {
+        setOrder(prev => prev ? { ...prev, status: newStatus } : null)
+        setShowRejectionForm(false)
+        setRejectionNotes("")
+      } else {
+        alert("فشل تحديث حالة الطلب: " + json.error)
+      }
+    } catch (err) {
+      alert("حدث خطأ أثناء تحديث حالة الطلب")
+    } finally {
+      setIsUpdatingStatus(false)
+    }
+  }
 
   useEffect(() => {
     const fetchOrderAndMessages = async () => {
@@ -205,6 +244,109 @@ export default function AdminOrderDetail({ params }: { params: Promise<{ id: str
                 <span className="text-muted-foreground">رقم الهاتف</span>
                 <span className="font-medium" dir="ltr">{order.profiles?.phone || 'غير متوفر'}</span>
               </div>
+            </div>
+          </div>
+
+          {/* Card: Payment Verification */}
+          <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+              <DollarSign className="w-5 h-5 text-primary" />
+              تفاصيل الدفع والمطابقة
+            </h3>
+            
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between pb-2 border-b border-border/50">
+                <span className="text-muted-foreground">طريقة الدفع</span>
+                <span className="font-bold text-foreground">{paymentLabels[order.payment_method] || order.payment_method}</span>
+              </div>
+              <div className="flex justify-between pb-2 border-b border-border/50">
+                <span className="text-muted-foreground">المبلغ المطلوب</span>
+                <span className="font-bold text-primary font-mono">{Number(order.total_amount).toLocaleString()} د.ع</span>
+              </div>
+              
+              {order.payment_receipt_url ? (
+                <div className="pt-2">
+                  <span className="text-muted-foreground block mb-2 font-bold text-xs">صورة إيصال التحويل:</span>
+                  <a 
+                    href={order.payment_receipt_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="block relative aspect-[4/5] w-full rounded-xl overflow-hidden border border-border group bg-secondary/10"
+                  >
+                    <img 
+                      src={order.payment_receipt_url} 
+                      alt="Receipt" 
+                      className="object-cover w-full h-full transition-transform group-hover:scale-[1.02] duration-200" 
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-bold">
+                      اضغط لعرض الإيصال في صفحة كاملة
+                    </div>
+                  </a>
+                </div>
+              ) : (
+                <div className="py-3 text-center text-xs text-muted-foreground bg-secondary/15 rounded-xl border border-dashed border-border mt-2">
+                  لا يوجد إيصال مرفوع (دفع مباشر أو بطاقة)
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              {order.status === 'pending' && (
+                <div className="space-y-3 pt-4 border-t border-border/80 mt-4">
+                  {!showRejectionForm ? (
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStatus("approved")}
+                        disabled={isUpdatingStatus}
+                        className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-500/20 disabled:opacity-50 transition-colors"
+                      >
+                        {isUpdatingStatus ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
+                        <span>موافقة وتفعيل</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowRejectionForm(true)}
+                        disabled={isUpdatingStatus}
+                        className="flex-1 bg-destructive/10 hover:bg-destructive/20 border border-destructive/20 text-destructive py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 disabled:opacity-50 transition-colors"
+                      >
+                        <XCircle className="w-4 h-4" />
+                        <span>رفض الطلب</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-[10px] font-bold text-foreground mb-1">سبب الرفض للعميل *</label>
+                        <textarea
+                          value={rejectionNotes}
+                          onChange={(e) => setRejectionNotes(e.target.value)}
+                          placeholder="اكتب سبب الرفض هنا (مثال: الإيصال غير واضح)..."
+                          rows={2}
+                          className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-primary transition-colors resize-none"
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleUpdateStatus("rejected")}
+                          disabled={isUpdatingStatus || !rejectionNotes.trim()}
+                          className="flex-1 bg-destructive text-white py-2 rounded-xl text-xs font-bold disabled:opacity-50 transition-colors"
+                        >
+                          تأكيد الرفض
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowRejectionForm(false)}
+                          disabled={isUpdatingStatus}
+                          className="flex-1 bg-secondary text-foreground py-2 rounded-xl text-xs font-bold hover:bg-secondary/80 transition-colors"
+                        >
+                          إلغاء
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 

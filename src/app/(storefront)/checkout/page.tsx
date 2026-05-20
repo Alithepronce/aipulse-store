@@ -13,7 +13,7 @@ import { useCart } from "@/features/cart/CartProvider"
 import { useAuth } from "@/features/auth/AuthProvider"
 import { MagneticWrapper } from "@/components/ui/MagneticWrapper"
 
-const paymentMethods = [
+const defaultPaymentMethods = [
   {
     id: "zaincash",
     name: "زين كاش",
@@ -51,6 +51,7 @@ const paymentMethods = [
 export default function CheckoutPage() {
   const { items, totalCount, clearCart } = useCart()
   const { user } = useAuth()
+  const [methods, setMethods] = useState<any[]>(defaultPaymentMethods)
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null)
   const [receiptFile, setReceiptFile] = useState<File | null>(null)
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null)
@@ -59,6 +60,29 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null)
   const [copiedNumber, setCopiedNumber] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    async function fetchPaymentMethods() {
+      try {
+        const res = await fetch("/api/payment-methods")
+        const json = await res.json()
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          // Map colors to methods based on id or index to preserve original visuals
+          const methodsWithColors = json.data.map((m: any) => {
+            let color = "from-purple-500 to-purple-600"
+            if (m.id === "zaincash") color = "from-green-500 to-green-600"
+            else if (m.id === "fastpay") color = "from-blue-500 to-blue-600"
+            else if (m.id === "fib") color = "from-amber-500 to-amber-600"
+            return { ...m, color }
+          })
+          setMethods(methodsWithColors)
+        }
+      } catch (err) {
+        console.warn("Failed to load dynamic payment methods, using defaults.", err)
+      }
+    }
+    fetchPaymentMethods()
+  }, [])
 
   // OCR Laser Scanner simulation states
   const [isScanning, setIsScanning] = useState(false)
@@ -257,7 +281,7 @@ export default function CheckoutPage() {
     )
   }
 
-  const currentMethod = paymentMethods.find((m) => m.id === selectedMethod)
+  const currentMethod = methods.find((m) => m.id === selectedMethod)
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-32 pb-20 relative">
@@ -285,7 +309,7 @@ export default function CheckoutPage() {
                 </h3>
                 
                 <div className="grid grid-cols-2 gap-3">
-                  {paymentMethods.map((method) => (
+                  {methods.map((method) => (
                     <button
                       key={method.id}
                       type="button"

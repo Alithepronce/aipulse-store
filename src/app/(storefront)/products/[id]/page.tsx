@@ -13,170 +13,6 @@ import Image from "next/image"
 import { useCart } from "@/features/cart/CartProvider"
 import { createClient } from "@/lib/supabase/client"
 
-const mockProductsData = {
-  "3a93b423-b6eb-4cbc-8020-3b04966be030": {
-    id: "3a93b423-b6eb-4cbc-8020-3b04966be030",
-    name: "الإطار القانوني للذكاء الاصطناعي في الأدلة الجنائية",
-    price: 50000,
-    category: "كتب إلكترونية",
-    description: "كتاب أكاديمي متخصص من تأليف د. فريال إبراهيم جبار الظفيري، يتناول الجوانب القانونية لاستخدام تقنيات الذكاء الاصطناعي في مجال الأدلة الجنائية والتحقيقات الجنائية الرقمية.",
-    longDescription: "يعد هذا الكتاب مرجعاً أكاديمياً فريداً من نوعه باللغة العربية، حيث يسلط الضوء على تداخل القانون الجنائي وتكنولوجيا الذكاء الاصطناعي. يستكشف الكتاب حجية الأدلة الجنائية الرقمية المستمدة من الشبكات العصبية، والأنظمة الذكية، والتحديات الإجرائية المتعلقة بحقوق الدفاع وضمانات نزاهة التحقيق الرقمي.",
-    image: "/book.png",
-    features: [
-      "تغطية كاملة للمواد القانونية العراقية والعربية ذات الصلة",
-      "أمثلة واقعية على أدلة مستخلصة بالذكاء الاصطناعي",
-      "دليل استرشادي للقضاة والمحامين والمحققين",
-      "صيغة PDF عالية الجودة متوافقة مع الأجهزة اللوحية"
-    ],
-    faqs: [
-      { q: "هل الكتاب يحتوي على دراسات حالة؟", a: "نعم، يستعرض الكتاب 5 قضايا جنائية حقيقية استُخدم فيها الذكاء الاصطناعي لتحليل البصمات والمقاطع الصوتية المفبركة." },
-      { q: "كيف سأحصل على الكتاب؟", a: "مباشرة بعد تأكيد عملية الدفع، سيظهر الكتاب في بوابة العميل الخاصة بك للتحميل الفوري بصيغة PDF." }
-    ],
-    rating: 4.9,
-    reviews: 14
-  },
-  "f2": {
-    id: "f2",
-    name: "كورس أمن المعلومات والتحقيق الرقمي المتكامل",
-    price: 120000,
-    category: "كورسات أونلاين",
-    description: "دورة تدريبية عملية تركز على تقنيات الكشف عن الاختراقات وجمع الأدلة الرقمية القانونية وفقاً للمعايير العالمية.",
-    longDescription: "كورس تدريبي مكثف يربط الجانب العملي والتقني بالجانب القانوني. يغطي الكورس مفاهيم الأمن السيبراني الأساسية، تحليل التهديدات، تتبع المخترقين في الشبكات المحلية، واستخلاص الأدلة الرقمية من الأجهزة التالفة أو المخترقة دون الإضرار بسلامتها القانونية.",
-    image: "/course.png",
-    features: [
-      "24 ساعة من الشروحات المصورة بجودة عالية",
-      "مختبرات عملية تفاعلية لتطبيق تقنيات الاختراق الأخلاقي",
-      "شهادة إتمام معتمدة من منصة Ai Pulse",
-      "وصول دائم لجميع التحديثات والملفات المرفقة"
-    ],
-    faqs: [
-      { q: "هل أحتاج لمعرفة مسبقة بالبرمجة؟", a: "لا، الكورس يبدأ من المبادئ الأساسية لأمن الشبكات وأنظمة التشغيل ثم يتدرج للمستويات المتقدمة." },
-      { q: "هل هناك دعم ومساعدة أثناء الدورة؟", a: "بالتأكيد، توجد مجموعة مناقشة مخصصة لطلاب الكورس حيث يمكنك طرح الأسئلة والحصول على إجابات من المدربين مباشرة." }
-    ],
-    rating: 5.0,
-    reviews: 28
-  },
-  "f3": {
-    id: "f3",
-    name: "قالب Next.js & Supabase المتكامل لإطلاق المشاريع",
-    price: 60000,
-    category: "برامج",
-    description: "قالب نظيف واحترافي يضم أنظمة المصادقة، الدفع الإلكتروني، الإشعارات، ولوحة التحكم لإطلاق مشروعك التقني في ساعات.",
-    longDescription: "أسرع قالب لبناء مشاريع الويب الحديثة (SaaS). مكتوب بالكامل بلغة TypeScript وتنسيق Tailwind CSS v4، ومجهز بالكامل بنظام مصادقة Supabase Auth، وربط لخدمات الدفع المحلية، مع لوحة تحكم إدارية كاملة لإدارة الطلبات والعملاء.",
-    image: "/course.png",
-    features: [
-      "بنية Next.js 15 App Router متطورة",
-      "قاعدة بيانات جاهزة مع Supabase وإعدادات RLS آمنة",
-      "شريط تنقل وفوتر مدمجان بتصميم Resend الأنيق",
-      "توثيق شامل لكيفية النشر والإطلاق على Vercel"
-    ],
-    faqs: [
-      { q: "هل يمكن استخدام القالب لمشاريع تجارية متعددة؟", a: "نعم، ترخيص القالب يسمح لك باستخدامه في مشاريعك الشخصية والتجارية غير المحدودة دون أي تكاليف إضافية." },
-      { q: "كيف يتم تحديث الكود؟", a: "ستحصل على مستودع Github خاص بالقالب، وستصلك التحديثات والترقيات مباشرة عبر Git Pull." }
-    ],
-    rating: 4.8,
-    reviews: 9
-  },
-  "f4": {
-    id: "f4",
-    name: "دليل المطور الشامل لتطبيقات Next.js السحابية",
-    price: 25000,
-    category: "كتب إلكترونية",
-    description: "أقوى دليل باللغة العربية لبناء وإطلاق تطبيقات الويب الاحترافية باستخدام Next.js 15 و React Server Components.",
-    longDescription: "كتاب يعيد تعريف طريقة تعلم تقنيات الويب الحديثة باللغة العربية. يتناول الكتاب بشرح معمق أساليب رندرة الصفحات، تحسين محركات البحث SEO، معالجة البيانات على السيرفر (Server Actions)، واستراتيجيات إدارة الكاش والأمان المتقدمة.",
-    image: "/book.png",
-    features: [
-      "أكثر من 300 صفحة من الشرح النظري والعملي المدعم بالكود",
-      "شرح تفصيلي لتصميم معماريات المواقع الكبيرة",
-      "أكواد ونماذج برمجية جاهزة للتحميل ومرفقة مع الكتاب",
-      "تحديثات مجانية دورية تواكب تحديثات Next.js الرسمية"
-    ],
-    faqs: [
-      { q: "هل الكتاب ورقي أم إلكتروني؟", a: "الكتاب إلكتروني بصيغة PDF و ePub لتتمكن من قراءته بأريحية على أي هاتف، جهاز لوحي، أو حاسوب." }
-    ],
-    rating: 4.7,
-    reviews: 18
-  },
-  "f5": {
-    id: "f5",
-    name: "دورة البرمجة الاحترافية بلغة TypeScript وتطبيقاتها",
-    price: 75000,
-    category: "كورسات أونلاين",
-    description: "تعلّم TypeScript من الصفر لتصميم أنظمة ويب قابلة للتوسع بمشاريع حقيقية مع Next.js و Node.js.",
-    longDescription: "الكثير من المطورين يستعملون TypeScript كأنها JavaScript عادية مع أنواع بسيطة. في هذه الدورة سنغوص في الأنواع المتقدمة (Generics, Conditional Types, Utility Types)، وتصميم الواجهات البرمجية الآمنة، وربطها بقواعد البيانات لرفع كفاءة وموثوقية أكوادك.",
-    image: "/course.png",
-    features: [
-      "45 درساً مصوراً يغطي التطبيقات العملية بالكامل",
-      "كتابة كود نظيف وتطبيق مبادئ SOLID البرمجية",
-      "دعم فني وتوجيه مهني من خبراء طوال فترة التعلم",
-      "مشاريع تخرج عملية يتم مراجعتها برمجياً بشكل فردي"
-    ],
-    faqs: [
-      { q: "هل تناسب الدورة المبتدئين في البرمجة؟", a: "الدورة تتطلب معرفة أساسية بلغة JavaScript (المتغيرات، الدوال، الحلقات التكرارية)." }
-    ],
-    rating: 4.9,
-    reviews: 32
-  },
-  "f6": {
-    id: "f6",
-    name: "نظام Fikr CRM لإدارة عيادات ومكاتب الاستشارة القانونية",
-    price: 150000,
-    category: "برامج",
-    description: "لوحة تحكم سحابية لإدارة ملفات العملاء، الجلسات، الفواتير، ومتابعة القضايا بشكل مؤتمت بالكامل.",
-    longDescription: "حل برمجي متكامل موجه للمحامين والمستشارين القانونيين لتنظيم أعمالهم اليومية. يوفر النظام لوحة تحكم ذكية لتسجيل بيانات الموكلين، جدولة جلسات المحاكم وتلقي التنبيهات بالبريد، أرشفة المستندات والملفات القضائية، وتوليد الفواتير والتقارير المالية.",
-    image: "/course.png",
-    features: [
-      "واجهة مستخدم عربية 100% متجاوبة مع الهواتف والتابلت",
-      "تنبيهات فورية بالبريد الإلكتروني وتكامل مع تقويم Google",
-      "نظام حماية وتشفير متطور لبيانات العملاء والمستندات",
-      "نسخ احتياطي يومي للمعلومات بشكل مؤتمت بالكامل"
-    ],
-    faqs: [
-      { q: "هل هناك اشتراك شهري؟", a: "لا، الشراء لمرة واحدة وتحصل على كود السورس بالكامل لتثبيته على خادمك الخاص مدى الحياة." }
-    ],
-    rating: 5.0,
-    reviews: 7
-  },
-  "f7": {
-    id: "f7",
-    name: "دليل التحقيق الجنائي الرقمي والجرائم المعلوماتية",
-    price: 38000,
-    category: "كتب إلكترونية",
-    description: "دليل قانوني وعملي يستهدف المحققين الرقميين ورجال القانون لتوثيق وتحليل الجرائم الإلكترونية.",
-    longDescription: "يوضح هذا الدليل الخطوات التفصيلية المعتمدة قانونياً لتوثيق الأدلة الرقمية (من الهواتف المحمولة، كاميرات المراقبة، رسائل واتساب، السجلات السحابية) وتقديمها للمحاكم العربية بما يضمن قبولها قانونياً وعدم الطعن فيها.",
-    image: "/book.png",
-    features: [
-      "شرح للمفاهيم التقنية بأسلوب مبسط لرجال القانون والقضاة",
-      "نماذج جاهزة لمحاضر ضبط وتوثيق الأدلة الرقمية",
-      "قوانين مكافحة جرائم المعلوماتية في العراق والدول العربية"
-    ],
-    faqs: [
-      { q: "هل الدليل موجه للتقنيين أم القانونيين؟", a: "الدليل مصمم ليكون حلقة الوصل بين الطرفين، فهو يخدم خبراء الأمن السيبراني ورجال الأمن والمحامين على حد سواء." }
-    ],
-    rating: 4.6,
-    reviews: 11
-  },
-  "f8": {
-    id: "f8",
-    name: "دورة الذكاء الاصطناعي والتطبيقات القضائية والقانونية",
-    price: 95000,
-    category: "كورسات أونلاين",
-    description: "دورة فريدة توضح كيفية استغلال نماذج الذكاء الاصطناعي التوليدي في إعداد المذكرات وتحليل النصوص القانونية.",
-    longDescription: "دورة مكثفة تستعرض كيفية الاستفادة الآمنة من تقنيات LLMs (مثل ChatGPT, Claude) في الصياغة القانونية ومراجعة العقود وتلخيص مئات الصفحات من مذكرات الدفاع، مع مراعاة كاملة للخصوصية والسرية المهنية لبيانات الموكلين.",
-    image: "/course.png",
-    features: [
-      "شرح تطبيقي لنماذج الذكاء الاصطناعي المحلية والمغلقة",
-      "أكثر من 50 نموذج كتابة ذكي (Prompts) مخصص للمحامين",
-      "تطبيقات عملية لتحليل العقود واستخراج البنود الحرجة"
-    ],
-    faqs: [
-      { q: "هل هناك تطبيق عملي على نماذج مجانية؟", a: "نعم، نركز بالدورة على الأدوات المتاحة مجاناً وكيفية تهيئتها للأعمال القانونية." }
-    ],
-    rating: 4.9,
-    reviews: 15
-  }
-}
-
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params)
   const { addItem } = useCart()
@@ -211,64 +47,50 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   useEffect(() => {
     async function fetchProduct() {
-      // Check if it's a mock product
-      if (mockProductsData[id as keyof typeof mockProductsData]) {
-        const mockP = mockProductsData[id as keyof typeof mockProductsData]
-        setProduct(mockP)
-        
-        // Generate some mock reviews
-        setReviewsList([
-          { id: "r1", reviewer_name: "أحمد علي", rating: 5, comment: "المنتج يفوق التوقعات، متميز جداً وأنصح بشدة باقتنائه للتوفير وتطوير المهارات.", created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() },
-          { id: "r2", reviewer_name: "م. محمد حامد", rating: 4, comment: "محتوى غني ودقيق، الحدود والتوهجات في التصميم رائعة.", created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString() }
-        ])
-        setLoading(false)
-        return
-      }
-
-      // Supabase Fetch
-      const supabase = createClient()
-      const { data } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
-        .single()
-        
-      if (data) {
-        setProduct({
-          id: data.id,
-          name: data.title,
-          price: Number(data.price),
-          category: data.category,
-          description: data.description || "",
-          longDescription: data.description || "هذا الكورس مصمم ليأخذك من الصفر في عالم التعلم إلى مستوى متقدم. ستتعلم كل شيء بدءاً من المفاهيم الأساسية وصولاً إلى التطبيق العملي.",
-          image: data.cover_image || "/course.png",
-          features: data.features || [],
-          faqs: data.faqs || [],
-          reviews: data.review_count || 0,
-          rating: data.rating || 0
-        })
-
-        const { data: reviewsData } = await supabase
-          .from('product_reviews')
+      try {
+        const supabase = createClient()
+        const { data } = await supabase
+          .from('products')
           .select('*')
-          .eq('product_id', id)
-          .order('created_at', { ascending: false })
-        
-        if (reviewsData) {
-          setReviewsList(reviewsData)
+          .eq('id', id)
+          .single()
+          
+        if (data) {
+          setProduct({
+            id: data.id,
+            name: data.title,
+            price: Number(data.price),
+            category: data.category,
+            description: data.description || "",
+            longDescription: data.description || "هذا الكورس مصمم ليأخذك من الصفر في عالم التعلم إلى مستوى متقدم. ستتعلم كل شيء بدءاً من المفاهيم الأساسية وصولاً إلى التطبيق العملي.",
+            image: data.cover_image || "/course.png",
+            features: data.features || [],
+            faqs: data.faqs || [],
+            reviews: data.review_count || 0,
+            rating: data.rating || 0
+          })
+
+          const { data: reviewsData } = await supabase
+            .from('product_reviews')
+            .select('*')
+            .eq('product_id', id)
+            .order('created_at', { ascending: false })
+          
+          if (reviewsData) {
+            setReviewsList(reviewsData)
+          }
+        } else {
+          setProduct(null)
         }
-      } else {
-        // Ultimate fallback to Dr. Feryal's book if database is empty/corrupt
-        const fallback = mockProductsData["3a93b423-b6eb-4cbc-8020-3b04966be030"]
-        setProduct(fallback)
+      } catch (err) {
+        console.error(err)
+        setProduct(null)
+      } finally {
+        setLoading(false)
       }
-      
-      setLoading(false)
     }
     fetchProduct()
-  }, [id])
-
-  // Video progress simulator
+  }, [id])  // Video progress simulator
   useEffect(() => {
     let interval: any
     if (isVideoPlaying) {
@@ -369,24 +191,22 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   if (loading) {
     return (
-      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center bg-black">
-        <Loader2 className="w-8 h-8 animate-spin text-white" />
+      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     )
   }
 
   if (!product) {
     return (
-      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center bg-black text-white">
+      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center bg-background text-foreground">
         <h1 className="text-2xl font-serif mb-4">لم يتم العثور على المنتج</h1>
-        <Link href="/store" className="text-muted-foreground hover:text-white underline">العودة للمتجر</Link>
+        <Link href="/store" className="text-muted-foreground hover:text-foreground underline">العودة للمتجر</Link>
       </div>
     )
   }
 
   const faqs = product?.faqs || []
-
-  // Mock Book Pages Contents
   const getBookPageContent = () => {
     switch (bookPage) {
       case 1:
@@ -439,12 +259,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white pt-32 pb-20 relative">
+    <div className="flex flex-col min-h-screen bg-background text-foreground pt-32 pb-20 relative">
       <div className="absolute top-0 left-1/3 w-[600px] h-[600px] glow-blue rounded-full blur-[140px] opacity-10 pointer-events-none z-0"></div>
       
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
-        <Link href="/store" className="inline-flex items-center gap-2 text-muted-foreground hover:text-white transition-colors mb-8 text-xs font-semibold">
+        <Link href="/store" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 text-xs font-semibold">
           <ArrowRight className="w-3.5 h-3.5" />
           <span>العودة للمعرض الرقمي</span>
         </Link>
@@ -458,13 +278,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-5 space-y-4"
           >
-            <div className="aspect-[4/3] rounded-2xl bg-white/[0.02] border border-white/[0.08] flex items-center justify-center overflow-hidden relative shadow-2xl">
+            <div className="aspect-[4/3] rounded-2xl bg-card border border-border/80 flex items-center justify-center overflow-hidden relative shadow-2xl">
               <Image src={product.image} alt={product.name} fill className="object-cover" />
             </div>
             
             <div className="grid grid-cols-3 gap-3">
               {[1, 2, 3].map(i => (
-                <div key={i} className="aspect-[4/3] rounded-xl bg-white/[0.01] border border-white/[0.04] flex items-center justify-center cursor-pointer hover:bg-white/[0.03] transition-colors relative overflow-hidden group">
+                <div key={i} className="aspect-[4/3] rounded-xl bg-secondary/10 border border-border/80 flex items-center justify-center cursor-pointer hover:bg-secondary/20 transition-colors relative overflow-hidden group">
                   <Image src={product.image} alt={product.name} fill className="object-cover opacity-30 group-hover:opacity-80 transition-opacity" />
                 </div>
               ))}
@@ -484,14 +304,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </div>
                 <span className="text-sm font-semibold">{product.rating ? product.rating.toFixed(1) : "0.0"}</span>
                 <span className="text-xs text-muted-foreground">({product.reviews || 0} تقييم)</span>
-                <span className="text-white/20">•</span>
+                <span className="text-border">•</span>
                 <span className="text-xs text-muted-foreground font-semibold uppercase">{product.category}</span>
               </div>
               
-              <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight mb-4 leading-tight">{product.name}</h1>
+              <h1 className="text-3xl md:text-5xl font-serif text-foreground tracking-tight mb-4 leading-tight">{product.name}</h1>
               
               <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-3xl font-bold text-white">{(product.price).toLocaleString("ar-IQ")}</span>
+                <span className="text-3xl font-bold text-foreground">{(product.price).toLocaleString("ar-IQ")}</span>
                 <span className="text-xs text-muted-foreground font-bold">د.ع</span>
               </div>
               
@@ -502,13 +322,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
             {/* Feature List */}
             {product.features && product.features.length > 0 && (
-              <div className="space-y-3 mb-8 bg-white/[0.02] border border-white/[0.04] p-5 rounded-2xl">
+              <div className="space-y-3 mb-8 bg-secondary/10 border border-border/80 p-5 rounded-2xl">
                 <h3 className="font-bold text-[10px] uppercase tracking-wider text-muted-foreground mb-3">ما الذي يشتمل عليه الشراء؟</h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {product.features.map((feature: string, i: number) => (
-                    <li key={i} className="flex items-center gap-2 text-xs font-semibold text-white/90">
-                      <div className="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
-                        <Check className="w-3.5 h-3.5 text-white" />
+                    <li key={i} className="flex items-center gap-2 text-xs font-semibold text-foreground/90">
+                      <div className="w-5 h-5 rounded-full bg-secondary/20 border border-border/80 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-3.5 h-3.5 text-foreground" />
                       </div>
                       <span className="truncate">{feature}</span>
                     </li>
@@ -525,7 +345,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 className={`w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-lg ${
                   added 
                     ? "bg-emerald-500 text-white shadow-emerald-500/20" 
-                    : "bg-white text-black hover:bg-neutral-100 shadow-white/5"
+                    : "bg-foreground text-background hover:bg-foreground/90 shadow-foreground/5"
                 }`}
               >
                 {added ? (
@@ -541,7 +361,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 )}
               </button>
               
-              <div className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-1.5 text-[10px] text-muted-foreground border border-white/[0.04] bg-white/[0.01] rounded-xl px-4 py-2">
+              <div className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-1.5 text-[10px] text-muted-foreground border border-border/80 bg-secondary/10 rounded-xl px-4 py-2">
                 <Shield className="w-3.5 h-3.5 text-emerald-400" />
                 <span>ضمان أمان فوري 100%</span>
               </div>
@@ -551,10 +371,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         </div>
 
         {/* Middle Section: Interactive Preview Sandbox (Center Stage) */}
-        <section className="border-t border-white/[0.06] pt-16 mb-20">
+        <section className="border-t border-border/80 pt-16 mb-20">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase bg-white/5 px-3 py-1 rounded-full border border-white/10">البيئة التفاعلية</span>
-            <h2 className="text-2xl md:text-3xl font-serif text-white mt-4 mb-2">معاينة تفاعلية حية للمنتج</h2>
+            <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase bg-secondary/20 px-3 py-1 rounded-full border border-border/80">البيئة التفاعلية</span>
+            <h2 className="text-2xl md:text-3xl font-serif text-foreground mt-4 mb-2">معاينة تفاعلية حية للمنتج</h2>
             <p className="text-xs text-muted-foreground">اختبر جودة ومحتويات هذا المنتج الرقمي قبل الشراء مباشرة من متصفحك.</p>
           </div>
 
@@ -563,22 +383,22 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             
             {/* 1. BOOK READER SANDBOX */}
             {product.category === "كتب إلكترونية" && (
-              <div className="rounded-2xl border border-white/[0.08] bg-[#07070a]/90 overflow-hidden flex flex-col shadow-2xl relative">
+              <div className="rounded-2xl border border-border/80 bg-card overflow-hidden flex flex-col shadow-2xl relative">
                 {/* Header */}
-                <div className="bg-[#0b0b0d] border-b border-white/[0.06] px-5 py-3 flex justify-between items-center z-10">
+                <div className="bg-secondary/10 border-b border-border/80 px-5 py-3 flex justify-between items-center z-10">
                   <div className="flex items-center gap-2.5">
-                    <BookOpen className="w-4 h-4 text-white" />
-                    <span className="text-xs font-bold text-white">قارئ الكتب المدمج | نسخة تجريبية</span>
+                    <BookOpen className="w-4 h-4 text-foreground" />
+                    <span className="text-xs font-bold text-foreground">قارئ الكتب المدمج | نسخة تجريبية</span>
                   </div>
                   
                   {/* Search word inside book */}
-                  <div className="relative hidden md:flex items-center bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-[10px]">
+                  <div className="relative hidden md:flex items-center bg-secondary/20 border border-border/80 rounded-lg px-2 py-0.5 text-[10px]">
                     <input
                       type="text"
                       placeholder="ابحث عن كلمة..."
                       value={bookSearch}
                       onChange={(e) => setBookSearch(e.target.value)}
-                      className="bg-transparent border-none outline-none w-28 text-white focus:ring-0 placeholder:text-muted-foreground text-right"
+                      className="bg-transparent border-none outline-none w-28 text-foreground focus:ring-0 placeholder:text-muted-foreground text-right"
                     />
                   </div>
 
@@ -586,19 +406,19 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <div className="flex items-center gap-1.5">
                     <button 
                       onClick={() => setBookFontSize("sm")} 
-                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "sm" ? "bg-white text-black font-bold" : "bg-white/5 hover:bg-white/10"}`}
+                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "sm" ? "bg-foreground text-background font-bold" : "bg-secondary hover:bg-secondary/80"}`}
                     >
                       A-
                     </button>
                     <button 
                       onClick={() => setBookFontSize("md")} 
-                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "md" ? "bg-white text-black font-bold" : "bg-white/10"}`}
+                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "md" ? "bg-foreground text-background font-bold" : "bg-secondary"}`}
                     >
                       A
                     </button>
                     <button 
                       onClick={() => setBookFontSize("lg")} 
-                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "lg" ? "bg-white text-black font-bold" : "bg-white/5 hover:bg-white/10"}`}
+                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "lg" ? "bg-foreground text-background font-bold" : "bg-secondary hover:bg-secondary/80"}`}
                     >
                       A+
                     </button>
@@ -610,7 +430,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   bookFontSize === "sm" ? "text-xs" : bookFontSize === "md" ? "text-sm" : "text-base"
                 }`}>
                   <div className="space-y-4">
-                    <h4 className="font-serif font-bold text-white border-b border-white/[0.04] pb-2 text-lg">{bookContent.title}</h4>
+                    <h4 className="font-serif font-bold text-foreground border-b border-border/80 pb-2 text-lg">{bookContent.title}</h4>
                     <p className="text-muted-foreground leading-relaxed text-right whitespace-pre-line">
                       {bookSearch && bookContent.text.includes(bookSearch) ? (
                         // Highlight searched text
@@ -630,18 +450,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     </p>
                   </div>
 
-                  <div className="flex justify-between items-center mt-10 pt-4 border-t border-white/[0.04]">
+                  <div className="flex justify-between items-center mt-10 pt-4 border-t border-border/80">
                     <span className="text-[10px] text-muted-foreground">الصفحة {bookPage} من 5</span>
                     <span className="text-[10px] text-muted-foreground">© د. فريال إبراهيم الظفيري</span>
                   </div>
                 </div>
 
                 {/* Footer Controls */}
-                <div className="bg-[#0b0b0d] border-t border-white/[0.06] px-5 py-3.5 flex justify-between items-center">
+                <div className="bg-secondary/10 border-t border-border/80 px-5 py-3.5 flex justify-between items-center">
                   <button
                     disabled={bookPage === 1}
                     onClick={() => setBookPage(prev => Math.max(prev - 1, 1))}
-                    className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 border border-border/85 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     السابق
                   </button>
@@ -652,7 +472,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         key={p}
                         onClick={() => setBookPage(p)}
                         className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${
-                          bookPage === p ? "bg-white text-black" : "bg-white/5 hover:bg-white/10 text-muted-foreground"
+                          bookPage === p ? "bg-foreground text-background" : "bg-secondary hover:bg-secondary/80 text-muted-foreground"
                         }`}
                       >
                         {p}
@@ -663,7 +483,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <button
                     disabled={bookPage === 5}
                     onClick={() => setBookPage(prev => Math.min(prev + 1, 5))}
-                    className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 border border-border/85 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     التالي
                   </button>
@@ -673,10 +493,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
             {/* 2. CLASSROOM WORKSPACE SANDBOX */}
             {product.category === "كورسات أونلاين" && (
-              <div className="rounded-2xl border border-white/[0.08] bg-[#07070a]/90 overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl">
+              <div className="rounded-2xl border border-border/80 bg-card overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl">
                 
                 {/* Left: Lessons Sidebar (4 cols) */}
-                <div className="md:col-span-4 bg-[#0a0a0c] border-b md:border-b-0 md:border-l border-white/[0.06] p-4 flex flex-col justify-between min-h-[300px]">
+                <div className="md:col-span-4 bg-secondary/10 border-b md:border-b-0 md:border-l border-border/80 p-4 flex flex-col justify-between min-h-[300px]">
                   <div>
                     <h3 className="font-bold text-xs uppercase tracking-wider text-muted-foreground mb-4 text-right">مقرر الدورة التدريبية</h3>
                     <div className="space-y-1">
@@ -692,8 +512,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           onClick={() => { setActiveLesson(lesson.id); setIsVideoPlaying(false); setVideoProgress(0); }}
                           className={`w-full text-right px-3 py-2 rounded-xl text-xs flex justify-between items-center transition-all ${
                             activeLesson === lesson.id
-                              ? "bg-white text-black font-bold"
-                              : "hover:bg-white/5 text-muted-foreground disabled:opacity-40"
+                              ? "bg-foreground text-background font-bold"
+                              : "hover:bg-secondary/40 text-muted-foreground disabled:opacity-40"
                           }`}
                         >
                           <span>{lesson.title}</span>
@@ -703,7 +523,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-white/[0.04] text-[10px] text-muted-foreground text-center">
+                  <div className="pt-4 border-t border-border/80 text-[10px] text-muted-foreground text-center">
                     شراء الدورة يفتح الوصول لجميع الشروحات
                   </div>
                 </div>
@@ -714,41 +534,41 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     <h4 className="font-bold text-xs text-muted-foreground mb-2">معاينة الدرس المفتوح</h4>
                     
                     {/* Simulated video player */}
-                    <div className="aspect-video bg-black border border-white/[0.08] rounded-xl overflow-hidden relative flex items-center justify-center group">
+                    <div className="aspect-video bg-background border border-border/80 rounded-xl overflow-hidden relative flex items-center justify-center group">
                       {isVideoPlaying ? (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-zinc-900/40">
-                          <Loader2 className="w-8 h-8 animate-spin text-white mb-2" />
-                          <span className="text-xs font-mono text-white/80">تشغيل العينة... {videoProgress}%</span>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-muted/40">
+                          <Loader2 className="w-8 h-8 animate-spin text-foreground mb-2" />
+                          <span className="text-xs font-mono text-foreground/80">تشغيل العينة... {videoProgress}%</span>
                           
                           <button 
                             onClick={() => setIsVideoPlaying(false)}
-                            className="mt-4 px-3 py-1 bg-white/10 hover:bg-white/20 border border-white/20 text-[9px] font-bold rounded-lg"
+                            className="mt-4 px-3 py-1 bg-secondary hover:bg-secondary/80 border border-border/80 text-[9px] font-bold rounded-lg"
                           >
                             إيقاف مؤقت
                           </button>
                         </div>
                       ) : (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/90 p-4">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/90 p-4">
                           <button 
                             onClick={() => { setIsVideoPlaying(true); }}
-                            className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
+                            className="w-14 h-14 rounded-full bg-foreground text-background flex items-center justify-center hover:scale-105 transition-transform"
                           >
                             <Play className="w-6 h-6 fill-current translate-x-[2px]" />
                           </button>
-                          <span className="text-xs font-bold text-white mt-4">شغّل عينة من الدرس الأول (14 دقيقة)</span>
+                          <span className="text-xs font-bold text-foreground mt-4">شغّل عينة من الدرس الأول (14 دقيقة)</span>
                         </div>
                       )}
 
                       {/* Video progress indicator bar */}
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10">
-                        <div className="h-full bg-white" style={{ width: `${videoProgress}%` }} />
+                      <div className="absolute bottom-0 left-0 w-full h-1 bg-border/40">
+                        <div className="h-full bg-primary" style={{ width: `${videoProgress}%` }} />
                       </div>
                     </div>
                   </div>
 
                   {/* Dynamic Interactive Quiz widget */}
-                  <div className="mt-6 bg-white/[0.02] border border-white/[0.04] p-4 rounded-xl">
-                    <h5 className="text-xs font-bold text-white mb-3 flex items-center gap-1.5">
+                  <div className="mt-6 bg-secondary/10 border border-border/80 p-4 rounded-xl">
+                    <h5 className="text-xs font-bold text-foreground mb-3 flex items-center gap-1.5">
                       <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
                       <span>اختبار سريع: ما الخطوة الأولى للتحقيق الرقمي؟</span>
                     </h5>
@@ -759,7 +579,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         className={`p-2.5 text-right rounded-lg border text-[11px] font-bold transition-all ${
                           quizAnswer === "correct"
                             ? "bg-emerald-500/10 border-emerald-500 text-emerald-400"
-                            : "bg-white/[0.01] border-white/[0.04] text-muted-foreground hover:text-white"
+                            : "bg-secondary/10 border-border/85 text-muted-foreground hover:text-foreground"
                         }`}
                       >
                         أ) جمع وتوثيق الأدلة مع الحفاظ على سلامتها
@@ -793,13 +613,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
             {/* 3. SOFTWARE CONFIGURATION PLAYGROUND */}
             {product.category === "برامج" && (
-              <div className="rounded-2xl border border-white/[0.08] bg-[#07070a]/90 overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl">
+              <div className="rounded-2xl border border-border/80 bg-card overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl">
                 {/* Left: Controls (5 cols) */}
-                <div className="md:col-span-5 bg-[#0a0a0c] border-b md:border-b-0 md:border-l border-white/[0.06] p-6 flex flex-col justify-between">
+                <div className="md:col-span-5 bg-secondary/10 border-b md:border-b-0 md:border-l border-border/80 p-6 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-4">
-                      <Settings className="w-4 h-4 text-white" />
-                      <span className="text-xs font-bold text-white">لوحة تخصيص القالب</span>
+                      <Settings className="w-4 h-4 text-foreground" />
+                      <span className="text-xs font-bold text-foreground">لوحة تخصيص القالب</span>
                     </div>
 
                     <p className="text-[11px] text-muted-foreground leading-relaxed mb-6">
@@ -814,7 +634,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           <button
                             onClick={() => setCfgTheme("dark")}
                             className={`flex-1 py-1 px-2 border rounded-lg text-[10px] font-bold transition-all ${
-                              cfgTheme === "dark" ? "bg-white text-black" : "bg-white/5 border-white/10"
+                              cfgTheme === "dark" ? "bg-foreground text-background" : "bg-secondary border-border/85"
                             }`}
                           >
                             داكن
@@ -822,7 +642,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           <button
                             onClick={() => setCfgTheme("light")}
                             className={`flex-1 py-1 px-2 border rounded-lg text-[10px] font-bold transition-all ${
-                              cfgTheme === "light" ? "bg-white text-black" : "bg-white/5 border-white/10"
+                              cfgTheme === "light" ? "bg-foreground text-background" : "bg-secondary border-border/85"
                             }`}
                           >
                             مضيء
@@ -840,8 +660,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                               onClick={() => setCfgColor(col as any)}
                               className={`flex-1 py-1 px-1.5 border rounded-lg text-[10px] font-semibold transition-all ${
                                 cfgColor === col 
-                                  ? "border-white text-white bg-white/10" 
-                                  : "border-white/5 text-muted-foreground bg-white/5"
+                                  ? "border-foreground text-foreground bg-secondary" 
+                                  : "border-border/85 text-muted-foreground bg-secondary/30"
                               }`}
                             >
                               {col === "purple" ? "أوركيد" : col === "blue" ? "أزرق" : "أخضر"}
@@ -856,10 +676,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         <button
                           onClick={() => setCfgNotifications(prev => !prev)}
                           className={`w-10 h-5 rounded-full relative transition-colors ${
-                            cfgNotifications ? "bg-white" : "bg-white/15"
+                            cfgNotifications ? "bg-foreground" : "bg-secondary/40"
                           }`}
                         >
-                          <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-black transition-all ${
+                          <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-background transition-all ${
                             cfgNotifications ? "right-5" : "right-1"
                           }`} />
                         </button>
@@ -868,12 +688,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   </div>
 
                   {/* Config code generator */}
-                  <div className="pt-6 border-t border-white/[0.04]">
-                    <div className="flex items-center gap-1.5 text-xs text-white mb-2">
+                  <div className="pt-6 border-t border-border/80">
+                    <div className="flex items-center gap-1.5 text-xs text-foreground mb-2">
                       <Code className="w-3.5 h-3.5 text-muted-foreground" />
                       <span className="font-mono text-[9px]">config.json</span>
                     </div>
-                    <pre className="bg-black/60 border border-white/[0.06] p-2.5 rounded-lg text-[9px] font-mono text-left select-all overflow-x-auto text-muted-foreground leading-normal" dir="ltr">
+                    <pre className="bg-secondary/20 border border-border/80 p-2.5 rounded-lg text-[9px] font-mono text-left select-all overflow-x-auto text-muted-foreground leading-normal" dir="ltr">
 {`{
   "theme": "${cfgTheme}",
   "primary": "${cfgColor}",
@@ -885,12 +705,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
                 {/* Right: Mockup Render (7 cols) */}
                 <div className="md:col-span-7 p-6 flex items-center justify-center min-h-[300px]">
-                  <div className={`w-full max-w-sm rounded-xl border border-white/[0.08] shadow-2xl overflow-hidden font-sans transition-all duration-300 flex flex-col h-60 ${
-                    cfgTheme === "dark" ? "bg-zinc-950 text-white" : "bg-white text-zinc-900 border-zinc-200"
+                  <div className={`w-full max-w-sm rounded-xl border border-border/80 shadow-2xl overflow-hidden font-sans transition-all duration-300 flex flex-col h-60 ${
+                    cfgTheme === "dark" ? "bg-zinc-950 text-white" : "bg-zinc-50 text-zinc-900 border-zinc-200"
                   }`}>
                     {/* Simulated app header */}
                     <div className={`px-4 py-2 border-b flex justify-between items-center ${
-                      cfgTheme === "dark" ? "border-zinc-800 bg-zinc-900/50" : "border-zinc-100 bg-zinc-50"
+                      cfgTheme === "dark" ? "border-zinc-800 bg-zinc-900/50" : "border-zinc-200 bg-zinc-100"
                     }`}>
                       <div className="flex items-center gap-1.5">
                         <div className={`w-3 h-3 rounded-full ${getCfgColorClass()}`} />
@@ -906,19 +726,19 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     <div className="p-4 flex-1 flex flex-col justify-between">
                       <div className="grid grid-cols-3 gap-2">
                         <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
-                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-50 border-neutral-100"
+                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-100 border-neutral-200"
                         }`}>
                           <span className="text-[8px] text-muted-foreground">المبيعات</span>
                           <span className="text-xs font-bold mt-1">1,248</span>
                         </div>
                         <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
-                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-50 border-neutral-100"
+                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-100 border-neutral-200"
                         }`}>
                           <span className="text-[8px] text-muted-foreground">التنزيلات</span>
                           <span className="text-xs font-bold mt-1">942</span>
                         </div>
                         <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
-                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-50 border-neutral-100"
+                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-100 border-neutral-200"
                         }`}>
                           <span className="text-[8px] text-muted-foreground">الزوار</span>
                           <span className="text-xs font-bold mt-1">5,820</span>
@@ -950,9 +770,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Detailed Description & FAQ */}
         {(product.longDescription || faqs.length > 0) && (
-          <div className="border-t border-white/[0.06] pt-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="border-t border-border/80 pt-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className={faqs.length > 0 ? "lg:col-span-8" : "lg:col-span-12"}>
-              <h2 className="text-2xl font-serif text-white mb-5">نظرة عامة مفصلة</h2>
+              <h2 className="text-2xl font-serif text-foreground mb-5">نظرة عامة مفصلة</h2>
               <div className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground leading-relaxed text-right whitespace-pre-line">
                 {product.longDescription}
               </div>
@@ -960,16 +780,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
             {faqs.length > 0 && (
               <div className="lg:col-span-4">
-                <h2 className="text-xl font-serif text-white mb-5">الأسئلة الشائعة</h2>
+                <h2 className="text-xl font-serif text-foreground mb-5">الأسئلة الشائعة</h2>
                 <div className="space-y-3">
                   {faqs.map((faq: { q: string; a: string }, i: number) => (
-                    <div key={i} className="bg-white/[0.01] border border-white/[0.04] rounded-xl overflow-hidden">
+                    <div key={i} className="bg-secondary/10 border border-border/80 rounded-xl overflow-hidden">
                       <button 
                         onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                        className="w-full px-5 py-3 flex items-center justify-between text-xs font-bold text-right hover:bg-white/[0.02] transition-colors"
+                        className="w-full px-5 py-3 flex items-center justify-between text-xs font-bold text-right hover:bg-secondary/20 transition-colors"
                       >
                         <span>{faq.q}</span>
-                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 text-white ${openFaq === i ? "rotate-180" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 text-foreground ${openFaq === i ? "rotate-180" : ""}`} />
                       </button>
                       <AnimatePresence>
                         {openFaq === i && (
@@ -977,7 +797,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            className="px-5 pb-3.5 text-xs text-muted-foreground leading-relaxed text-right border-t border-white/[0.02] pt-2"
+                            className="px-5 pb-3.5 text-xs text-muted-foreground leading-relaxed text-right border-t border-border/80 pt-2"
                           >
                             {faq.a}
                           </motion.div>
@@ -992,14 +812,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         )}
 
         {/* Reviews Section */}
-        <div className="border-t border-white/[0.06] pt-16 mt-16">
-          <h2 className="text-2xl font-serif text-white mb-10 text-right">تقييمات مجتمعنا</h2>
+        <div className="border-t border-border/80 pt-16 mt-16">
+          <h2 className="text-2xl font-serif text-foreground mb-10 text-right">تقييمات مجتمعنا</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             {/* Submit review */}
             <div className="lg:col-span-4">
-              <div className="bg-white/[0.01] border border-white/[0.04] p-6 rounded-2xl sticky top-24">
-                <h3 className="text-sm font-bold text-white mb-4">أضف رأيك الصادق</h3>
+              <div className="bg-secondary/10 border border-border/80 p-6 rounded-2xl sticky top-24">
+                <h3 className="text-sm font-bold text-foreground mb-4">أضف رأيك الصادق</h3>
                 <form onSubmit={handleReviewSubmit} className="space-y-4">
                   <div>
                     <label className="block text-[10px] text-muted-foreground mb-1.5">الاسم</label>
@@ -1008,7 +828,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       required 
                       value={reviewName}
                       onChange={(e) => setReviewName(e.target.value)}
-                      className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-2.5 outline-none focus:border-white/20 text-xs transition-colors" 
+                      className="w-full bg-secondary/10 border border-border/80 rounded-xl px-4 py-2.5 outline-none focus:border-border/100 text-xs transition-colors" 
                       placeholder="اسمك الكريم" 
                     />
                   </div>
@@ -1033,7 +853,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       rows={3} 
                       value={reviewComment}
                       onChange={(e) => setReviewComment(e.target.value)}
-                      className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-2.5 outline-none focus:border-white/20 text-xs transition-colors resize-none" 
+                      className="w-full bg-secondary/10 border border-border/80 rounded-xl px-4 py-2.5 outline-none focus:border-border/100 text-xs transition-colors resize-none" 
                       placeholder="اكتب ملاحظاتك وتقييمك هنا..." 
                     />
                   </div>
@@ -1041,7 +861,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <button 
                     type="submit" 
                     disabled={isSubmittingReview || !reviewName}
-                    className="w-full bg-white text-black py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-neutral-100 transition-colors disabled:opacity-50"
+                    className="w-full bg-foreground text-background py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-foreground/95 transition-colors disabled:opacity-50"
                   >
                     {isSubmittingReview ? <Loader2 className="w-4 h-4 animate-spin" /> : (reviewSuccess ? <Check className="w-4 h-4" /> : <Send className="w-4 h-4" />)}
                     {isSubmittingReview ? "جاري الحفظ..." : (reviewSuccess ? "شكراً لمشاركتنا تقييمك!" : "إرسال التقييم")}
@@ -1053,8 +873,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             {/* Reviews history */}
             <div className="lg:col-span-8 space-y-4">
               {reviewsList.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground bg-white/[0.01] rounded-2xl border border-white/[0.04] border-dashed">
-                  <Star className="w-10 h-10 mb-3 opacity-20 text-white" />
+                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground bg-secondary/10 rounded-2xl border border-border/80 border-dashed">
+                  <Star className="w-10 h-10 mb-3 opacity-20 text-foreground" />
                   <p className="text-xs">لا توجد تقييمات سابقة بعد. شاركنا تقييمك لتكون الأول!</p>
                 </div>
               ) : (
@@ -1063,11 +883,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     key={review.id} 
-                    className="p-5 rounded-2xl bg-white/[0.01] border border-white/[0.04]"
+                    className="p-5 rounded-2xl bg-secondary/10 border border-border/80"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-white/5 text-white flex items-center justify-center font-bold text-sm">
+                        <div className="w-9 h-9 rounded-full bg-secondary text-foreground flex items-center justify-center font-bold text-sm">
                           {review.reviewer_name.charAt(0)}
                         </div>
                         <div>
@@ -1084,7 +904,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       </span>
                     </div>
                     {review.comment && (
-                      <p className="text-muted-foreground text-xs leading-relaxed mt-4 bg-black/40 p-3.5 rounded-xl border border-white/[0.03] text-right">
+                      <p className="text-muted-foreground text-xs leading-relaxed mt-4 bg-secondary/20 p-3.5 rounded-xl border border-border/80 text-right">
                         {review.comment}
                       </p>
                     )}
