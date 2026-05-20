@@ -166,9 +166,9 @@ export default function Home() {
 
   // Typewriter effect for API terminal code simulation
   const apiSnippets = {
-    js: `// كود جلب المنتج رقمياً باستخدام JS\nimport { createClient } from '@supabase/supabase-js';\n\nconst supabase = createClient(URL, KEY);\nconst { data, error } = await supabase\n  .from('products')\n  .select('file_url')\n  .eq('id', 'prod_009x');\n\nconsole.log("رابط التحميل:", data.file_url);`,
-    curl: `# جلب الملف الرقمي مباشرة عبر الـ Terminal\ncurl -X GET \\\n  https://api.aipulse.com/v1/downloads/prod_009x \\\n  -H "Authorization: Bearer api_key_live_2026" \\\n  -H "Accept: application/octet-stream"`,
-    py: `# جلب وتحميل المنتج عبر Python SDK\nimport requests\n\nheaders = {"Authorization": "Bearer api_key_live_2026"}\nurl = "https://api.aipulse.com/v1/downloads/prod_009x"\n\nresponse = requests.get(url, headers=headers)\nwith open("ebook.pdf", "wb") as f:\n    f.write(response.content)\nprint("تم تحميل المنتج بنجاح!")`
+    js: `// كود جلب المنتج رقميا باستخدام جافا سكريبت\nimport { createClient } from '@supabase/supabase-js';\n\nconst supabase = createClient(URL, KEY);\nconst { data, error } = await supabase\n  .from('products')\n  .select('file_url')\n  .eq('id', 'prod_009x');\n\nconsole.log("رابط التحميل:", data.file_url);`,
+    curl: `# جلب الملف الرقمي مباشرة عبر الكونسول\ncurl -X GET \\\n  https://api.aipulse.com/v1/downloads/prod_009x \\\n  -H "Authorization: Bearer api_key_live_2026" \\\n  -H "Accept: application/octet-stream"`,
+    py: `# جلب وتحميل المنتج برمجيا بلغة بايثون\nimport requests\n\nheaders = {"Authorization": "Bearer api_key_live_2026"}\nurl = "https://api.aipulse.com/v1/downloads/prod_009x"\n\nresponse = requests.get(url, headers=headers)\nwith open("ebook.pdf", "wb") as f:\n    f.write(response.content)\nprint("تم تحميل المنتج بنجاح!")`
   }
 
   useEffect(() => {
@@ -383,7 +383,7 @@ export default function Home() {
 
                 <div className="bg-secondary/30 border border-border p-4 rounded-xl mt-4 flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">السرعة المتوقعة:</span>
-                  <span className="text-xs font-bold text-foreground">{speedConfigs[speedOption].speed}</span>
+                  <span className="text-xs font-bold text-foreground" dir="ltr">{speedConfigs[speedOption].speed}</span>
                 </div>
 
                 <div className="bg-secondary/30 border border-border p-4 rounded-xl mt-2 flex items-center justify-between">
@@ -412,7 +412,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-between items-center mt-2 text-[10px] text-muted-foreground">
                   <span>تم تحميل {Math.round(downloadProgress)}%</span>
-                  <span>{speedOption.toUpperCase()} - {speedConfigs[speedOption].speed}</span>
+                  <span dir="ltr">{speedOption.toUpperCase()} - {speedConfigs[speedOption].speed}</span>
                 </div>
               </div>
             </motion.div>
@@ -461,14 +461,14 @@ export default function Home() {
                 </div>
 
                 {/* Simulated IDE Terminal */}
-                <div className="w-full md:w-80 bg-background border border-border rounded-xl overflow-hidden font-mono text-[10px] text-right flex flex-col h-40">
-                  <div className="bg-secondary px-3 py-1.5 border-b border-border flex items-center gap-1">
+                <div className="w-full md:w-80 bg-background border border-border rounded-xl overflow-hidden font-mono text-[10px] flex flex-col h-40" dir="ltr">
+                  <div className="bg-secondary px-3 py-1.5 border-b border-border flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-red-500/40"></div>
                     <div className="w-2 h-2 rounded-full bg-yellow-500/40"></div>
                     <div className="w-2 h-2 rounded-full bg-green-500/40"></div>
-                    <span className="text-[9px] text-muted-foreground mr-auto">aipulse_api.sh</span>
+                    <span className="text-[9px] text-muted-foreground ml-auto">aipulse_api.sh</span>
                   </div>
-                  <div className="p-3 flex-1 overflow-y-auto text-left text-foreground/90 whitespace-pre-wrap select-all cursor-text leading-normal scrollbar-none" dir="ltr">
+                  <div className="p-3 flex-1 overflow-y-auto text-left text-foreground/90 whitespace-pre-wrap select-all cursor-text leading-normal scrollbar-none">
                     {terminalOutput}
                     {isTyping && <span className="animate-pulse inline-block w-1.5 h-3.5 bg-blue-400 ml-1">|</span>}
                   </div>
