@@ -36,56 +36,54 @@
 
 @layer base {
   :root {
-    /* Minimalism 2.0 - Light Theme */
-    --background: 210 20% 98%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    /* Premium Light Theme */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 98%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220 15% 20%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 15% 20%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14% 96%;
-    --accent-foreground: 220 15% 20%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
     --radius: 0.75rem;
 
-    /* Custom Gradients for Minimalism 2.0 */
-    --gradient-glow: radial-gradient(circle at 50% -20%, rgba(120, 150, 200, 0.15) 0%, transparent 50%);
+    --gradient-glow: radial-gradient(circle at 50% -20%, rgba(120, 150, 200, 0.15) 0%, transparent 60%);
   }
 
   .dark {
-    /* Minimalism 2.0 - Dark Theme */
-    --background: 224 71.4% 4.1%;
+    /* Premium Resend Dark Theme (True Black canvas) */
+    --background: 0 0% 0%;
     --foreground: 210 40% 98%;
-    --card: 224 71.4% 4.1%;
+    --card: 240 10% 3.9%; /* #0a0a0c */
     --card-foreground: 210 40% 98%;
-    --popover: 224 71.4% 4.1%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 224 71.4% 4.1%;
-    --secondary: 215 27.9% 16.9%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 240 5.9% 10%; /* #101012 */
     --secondary-foreground: 210 40% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
+    --muted: 240 5.9% 10%;
+    --muted-foreground: 215 13.8% 64.1%; /* #a1a4a5 */
+    --accent: 240 5.9% 10%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
+    --border: 240 5.9% 15%; /* rgba(255,255,255,0.08) */
+    --input: 240 5.9% 15%;
     --ring: 216 12.2% 83.9%;
     
-    /* Custom Gradients for Minimalism 2.0 */
-    --gradient-glow: radial-gradient(circle at 50% -20%, rgba(200, 220, 255, 0.1) 0%, transparent 60%);
+    --gradient-glow: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.15) 0%, transparent 60%);
   }
 }
 
@@ -93,52 +91,110 @@
   *,
   ::before,
   ::after {
-    border-color: transparent !important;
+    border-color: hsl(var(--border));
   }
-  /* Kill ALL decorative borders - border class from Tailwind adds width */
-  [class*="border"]:not(input):not(textarea):not(select) {
-    border-width: 0 !important;
-    border-color: transparent !important;
-  }
-  /* Only form elements keep visible borders */
-  input,
-  textarea,
-  select {
-    border-color: hsl(var(--border)) !important;
-  }
-  input:focus,
-  textarea:focus,
-  select:focus {
-    border-color: hsl(var(--primary)) !important;
-  }
+  
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
-    background-image: none;
-  }
-  .dark body {
     background-image: var(--gradient-glow);
     background-attachment: fixed;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-position: top center;
   }
 }
 
-/* Minimalism 2.0 Glassmorphism */
+/* Glassmorphism & Hairline Panels */
 .glass {
-  background-color: rgb(255 255 255 / 0.4);
+  background-color: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
-.dark .glass {
-  background-color: rgb(0 0 0 / 0.4);
+
+.light .glass {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .glass-panel {
-  background-color: rgb(255 255 255 / 0.6);
+  background-color: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 1rem;
 }
-.dark .glass-panel {
-  background-color: rgb(0 0 0 / 0.6);
+
+.light .glass-panel {
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Premium Grid Background */
+.bg-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.light .bg-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+/* Laser Scan Animation for Receipt verification */
+@keyframes laser-scan {
+  0% {
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    top: 100%;
+    opacity: 1;
+  }
+  100% {
+    top: 0%;
+    opacity: 0.8;
+  }
+}
+
+.laser-scanner-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  box-shadow: 0 0 8px #10b981;
+  animation: laser-scan 3s ease-in-out infinite;
+}
+
+/* Accent Atmosphere Glows */
+.glow-orange {
+  background: radial-gradient(circle, rgba(255, 89, 0, 0.1) 0%, transparent 70%);
+}
+.glow-blue {
+  background: radial-gradient(circle, rgba(0, 117, 255, 0.1) 0%, transparent 70%);
+}
+.glow-green {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+}
+.glow-purple {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

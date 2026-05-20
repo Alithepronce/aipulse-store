@@ -2,11 +2,180 @@
 
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ShoppingCart, Check, Star, Shield, ArrowRight, ChevronDown, Loader2, Send } from "lucide-react"
+import { 
+  ShoppingCart, Check, Star, Shield, ArrowRight, 
+  ChevronDown, Loader2, Send, BookOpen, Play, 
+  Maximize2, ZoomIn, ZoomOut, CheckCircle, XCircle, 
+  Eye, RefreshCw, Smartphone, Settings, Code, Bell
+} from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useCart } from "@/features/cart/CartProvider"
 import { createClient } from "@/lib/supabase/client"
+
+const mockProductsData = {
+  "3a93b423-b6eb-4cbc-8020-3b04966be030": {
+    id: "3a93b423-b6eb-4cbc-8020-3b04966be030",
+    name: "الإطار القانوني للذكاء الاصطناعي في الأدلة الجنائية",
+    price: 50000,
+    category: "كتب إلكترونية",
+    description: "كتاب أكاديمي متخصص من تأليف د. فريال إبراهيم جبار الظفيري، يتناول الجوانب القانونية لاستخدام تقنيات الذكاء الاصطناعي في مجال الأدلة الجنائية والتحقيقات الجنائية الرقمية.",
+    longDescription: "يعد هذا الكتاب مرجعاً أكاديمياً فريداً من نوعه باللغة العربية، حيث يسلط الضوء على تداخل القانون الجنائي وتكنولوجيا الذكاء الاصطناعي. يستكشف الكتاب حجية الأدلة الجنائية الرقمية المستمدة من الشبكات العصبية، والأنظمة الذكية، والتحديات الإجرائية المتعلقة بحقوق الدفاع وضمانات نزاهة التحقيق الرقمي.",
+    image: "/book.png",
+    features: [
+      "تغطية كاملة للمواد القانونية العراقية والعربية ذات الصلة",
+      "أمثلة واقعية على أدلة مستخلصة بالذكاء الاصطناعي",
+      "دليل استرشادي للقضاة والمحامين والمحققين",
+      "صيغة PDF عالية الجودة متوافقة مع الأجهزة اللوحية"
+    ],
+    faqs: [
+      { q: "هل الكتاب يحتوي على دراسات حالة؟", a: "نعم، يستعرض الكتاب 5 قضايا جنائية حقيقية استُخدم فيها الذكاء الاصطناعي لتحليل البصمات والمقاطع الصوتية المفبركة." },
+      { q: "كيف سأحصل على الكتاب؟", a: "مباشرة بعد تأكيد عملية الدفع، سيظهر الكتاب في بوابة العميل الخاصة بك للتحميل الفوري بصيغة PDF." }
+    ],
+    rating: 4.9,
+    reviews: 14
+  },
+  "f2": {
+    id: "f2",
+    name: "كورس أمن المعلومات والتحقيق الرقمي المتكامل",
+    price: 120000,
+    category: "كورسات أونلاين",
+    description: "دورة تدريبية عملية تركز على تقنيات الكشف عن الاختراقات وجمع الأدلة الرقمية القانونية وفقاً للمعايير العالمية.",
+    longDescription: "كورس تدريبي مكثف يربط الجانب العملي والتقني بالجانب القانوني. يغطي الكورس مفاهيم الأمن السيبراني الأساسية، تحليل التهديدات، تتبع المخترقين في الشبكات المحلية، واستخلاص الأدلة الرقمية من الأجهزة التالفة أو المخترقة دون الإضرار بسلامتها القانونية.",
+    image: "/course.png",
+    features: [
+      "24 ساعة من الشروحات المصورة بجودة عالية",
+      "مختبرات عملية تفاعلية لتطبيق تقنيات الاختراق الأخلاقي",
+      "شهادة إتمام معتمدة من منصة Ai Pulse",
+      "وصول دائم لجميع التحديثات والملفات المرفقة"
+    ],
+    faqs: [
+      { q: "هل أحتاج لمعرفة مسبقة بالبرمجة؟", a: "لا، الكورس يبدأ من المبادئ الأساسية لأمن الشبكات وأنظمة التشغيل ثم يتدرج للمستويات المتقدمة." },
+      { q: "هل هناك دعم ومساعدة أثناء الدورة؟", a: "بالتأكيد، توجد مجموعة مناقشة مخصصة لطلاب الكورس حيث يمكنك طرح الأسئلة والحصول على إجابات من المدربين مباشرة." }
+    ],
+    rating: 5.0,
+    reviews: 28
+  },
+  "f3": {
+    id: "f3",
+    name: "قالب Next.js & Supabase المتكامل لإطلاق المشاريع",
+    price: 60000,
+    category: "برامج",
+    description: "قالب نظيف واحترافي يضم أنظمة المصادقة، الدفع الإلكتروني، الإشعارات، ولوحة التحكم لإطلاق مشروعك التقني في ساعات.",
+    longDescription: "أسرع قالب لبناء مشاريع الويب الحديثة (SaaS). مكتوب بالكامل بلغة TypeScript وتنسيق Tailwind CSS v4، ومجهز بالكامل بنظام مصادقة Supabase Auth، وربط لخدمات الدفع المحلية، مع لوحة تحكم إدارية كاملة لإدارة الطلبات والعملاء.",
+    image: "/course.png",
+    features: [
+      "بنية Next.js 15 App Router متطورة",
+      "قاعدة بيانات جاهزة مع Supabase وإعدادات RLS آمنة",
+      "شريط تنقل وفوتر مدمجان بتصميم Resend الأنيق",
+      "توثيق شامل لكيفية النشر والإطلاق على Vercel"
+    ],
+    faqs: [
+      { q: "هل يمكن استخدام القالب لمشاريع تجارية متعددة؟", a: "نعم، ترخيص القالب يسمح لك باستخدامه في مشاريعك الشخصية والتجارية غير المحدودة دون أي تكاليف إضافية." },
+      { q: "كيف يتم تحديث الكود؟", a: "ستحصل على مستودع Github خاص بالقالب، وستصلك التحديثات والترقيات مباشرة عبر Git Pull." }
+    ],
+    rating: 4.8,
+    reviews: 9
+  },
+  "f4": {
+    id: "f4",
+    name: "دليل المطور الشامل لتطبيقات Next.js السحابية",
+    price: 25000,
+    category: "كتب إلكترونية",
+    description: "أقوى دليل باللغة العربية لبناء وإطلاق تطبيقات الويب الاحترافية باستخدام Next.js 15 و React Server Components.",
+    longDescription: "كتاب يعيد تعريف طريقة تعلم تقنيات الويب الحديثة باللغة العربية. يتناول الكتاب بشرح معمق أساليب رندرة الصفحات، تحسين محركات البحث SEO، معالجة البيانات على السيرفر (Server Actions)، واستراتيجيات إدارة الكاش والأمان المتقدمة.",
+    image: "/book.png",
+    features: [
+      "أكثر من 300 صفحة من الشرح النظري والعملي المدعم بالكود",
+      "شرح تفصيلي لتصميم معماريات المواقع الكبيرة",
+      "أكواد ونماذج برمجية جاهزة للتحميل ومرفقة مع الكتاب",
+      "تحديثات مجانية دورية تواكب تحديثات Next.js الرسمية"
+    ],
+    faqs: [
+      { q: "هل الكتاب ورقي أم إلكتروني؟", a: "الكتاب إلكتروني بصيغة PDF و ePub لتتمكن من قراءته بأريحية على أي هاتف، جهاز لوحي، أو حاسوب." }
+    ],
+    rating: 4.7,
+    reviews: 18
+  },
+  "f5": {
+    id: "f5",
+    name: "دورة البرمجة الاحترافية بلغة TypeScript وتطبيقاتها",
+    price: 75000,
+    category: "كورسات أونلاين",
+    description: "تعلّم TypeScript من الصفر لتصميم أنظمة ويب قابلة للتوسع بمشاريع حقيقية مع Next.js و Node.js.",
+    longDescription: "الكثير من المطورين يستعملون TypeScript كأنها JavaScript عادية مع أنواع بسيطة. في هذه الدورة سنغوص في الأنواع المتقدمة (Generics, Conditional Types, Utility Types)، وتصميم الواجهات البرمجية الآمنة، وربطها بقواعد البيانات لرفع كفاءة وموثوقية أكوادك.",
+    image: "/course.png",
+    features: [
+      "45 درساً مصوراً يغطي التطبيقات العملية بالكامل",
+      "كتابة كود نظيف وتطبيق مبادئ SOLID البرمجية",
+      "دعم فني وتوجيه مهني من خبراء طوال فترة التعلم",
+      "مشاريع تخرج عملية يتم مراجعتها برمجياً بشكل فردي"
+    ],
+    faqs: [
+      { q: "هل تناسب الدورة المبتدئين في البرمجة؟", a: "الدورة تتطلب معرفة أساسية بلغة JavaScript (المتغيرات، الدوال، الحلقات التكرارية)." }
+    ],
+    rating: 4.9,
+    reviews: 32
+  },
+  "f6": {
+    id: "f6",
+    name: "نظام Fikr CRM لإدارة عيادات ومكاتب الاستشارة القانونية",
+    price: 150000,
+    category: "برامج",
+    description: "لوحة تحكم سحابية لإدارة ملفات العملاء، الجلسات، الفواتير، ومتابعة القضايا بشكل مؤتمت بالكامل.",
+    longDescription: "حل برمجي متكامل موجه للمحامين والمستشارين القانونيين لتنظيم أعمالهم اليومية. يوفر النظام لوحة تحكم ذكية لتسجيل بيانات الموكلين، جدولة جلسات المحاكم وتلقي التنبيهات بالبريد، أرشفة المستندات والملفات القضائية، وتوليد الفواتير والتقارير المالية.",
+    image: "/course.png",
+    features: [
+      "واجهة مستخدم عربية 100% متجاوبة مع الهواتف والتابلت",
+      "تنبيهات فورية بالبريد الإلكتروني وتكامل مع تقويم Google",
+      "نظام حماية وتشفير متطور لبيانات العملاء والمستندات",
+      "نسخ احتياطي يومي للمعلومات بشكل مؤتمت بالكامل"
+    ],
+    faqs: [
+      { q: "هل هناك اشتراك شهري؟", a: "لا، الشراء لمرة واحدة وتحصل على كود السورس بالكامل لتثبيته على خادمك الخاص مدى الحياة." }
+    ],
+    rating: 5.0,
+    reviews: 7
+  },
+  "f7": {
+    id: "f7",
+    name: "دليل التحقيق الجنائي الرقمي والجرائم المعلوماتية",
+    price: 38000,
+    category: "كتب إلكترونية",
+    description: "دليل قانوني وعملي يستهدف المحققين الرقميين ورجال القانون لتوثيق وتحليل الجرائم الإلكترونية.",
+    longDescription: "يوضح هذا الدليل الخطوات التفصيلية المعتمدة قانونياً لتوثيق الأدلة الرقمية (من الهواتف المحمولة، كاميرات المراقبة، رسائل واتساب، السجلات السحابية) وتقديمها للمحاكم العربية بما يضمن قبولها قانونياً وعدم الطعن فيها.",
+    image: "/book.png",
+    features: [
+      "شرح للمفاهيم التقنية بأسلوب مبسط لرجال القانون والقضاة",
+      "نماذج جاهزة لمحاضر ضبط وتوثيق الأدلة الرقمية",
+      "قوانين مكافحة جرائم المعلوماتية في العراق والدول العربية"
+    ],
+    faqs: [
+      { q: "هل الدليل موجه للتقنيين أم القانونيين؟", a: "الدليل مصمم ليكون حلقة الوصل بين الطرفين، فهو يخدم خبراء الأمن السيبراني ورجال الأمن والمحامين على حد سواء." }
+    ],
+    rating: 4.6,
+    reviews: 11
+  },
+  "f8": {
+    id: "f8",
+    name: "دورة الذكاء الاصطناعي والتطبيقات القضائية والقانونية",
+    price: 95000,
+    category: "كورسات أونلاين",
+    description: "دورة فريدة توضح كيفية استغلال نماذج الذكاء الاصطناعي التوليدي في إعداد المذكرات وتحليل النصوص القانونية.",
+    longDescription: "دورة مكثفة تستعرض كيفية الاستفادة الآمنة من تقنيات LLMs (مثل ChatGPT, Claude) في الصياغة القانونية ومراجعة العقود وتلخيص مئات الصفحات من مذكرات الدفاع، مع مراعاة كاملة للخصوصية والسرية المهنية لبيانات الموكلين.",
+    image: "/course.png",
+    features: [
+      "شرح تطبيقي لنماذج الذكاء الاصطناعي المحلية والمغلقة",
+      "أكثر من 50 نموذج كتابة ذكي (Prompts) مخصص للمحامين",
+      "تطبيقات عملية لتحليل العقود واستخراج البنود الحرجة"
+    ],
+    faqs: [
+      { q: "هل هناك تطبيق عملي على نماذج مجانية؟", a: "نعم، نركز بالدورة على الأدوات المتاحة مجاناً وكيفية تهيئتها للأعمال القانونية." }
+    ],
+    rating: 4.9,
+    reviews: 15
+  }
+}
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params)
@@ -23,8 +192,40 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [isSubmittingReview, setIsSubmittingReview] = useState(false)
   const [reviewSuccess, setReviewSuccess] = useState(false)
 
+  // Interactive Book Reader states
+  const [bookPage, setBookPage] = useState(1)
+  const [bookFontSize, setBookFontSize] = useState<"sm" | "md" | "lg">("md")
+  const [isBookFullscreen, setIsBookFullscreen] = useState(false)
+  const [bookSearch, setBookSearch] = useState("")
+
+  // Interactive Classroom states
+  const [activeLesson, setActiveLesson] = useState(1)
+  const [quizAnswer, setQuizAnswer] = useState<string | null>(null)
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const [videoProgress, setVideoProgress] = useState(0)
+
+  // Interactive Config customizer states
+  const [cfgTheme, setCfgTheme] = useState<"dark" | "light">("dark")
+  const [cfgColor, setCfgColor] = useState<"blue" | "emerald" | "purple">("purple")
+  const [cfgNotifications, setCfgNotifications] = useState(true)
+
   useEffect(() => {
     async function fetchProduct() {
+      // Check if it's a mock product
+      if (mockProductsData[id as keyof typeof mockProductsData]) {
+        const mockP = mockProductsData[id as keyof typeof mockProductsData]
+        setProduct(mockP)
+        
+        // Generate some mock reviews
+        setReviewsList([
+          { id: "r1", reviewer_name: "أحمد علي", rating: 5, comment: "المنتج يفوق التوقعات، متميز جداً وأنصح بشدة باقتنائه للتوفير وتطوير المهارات.", created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() },
+          { id: "r2", reviewer_name: "م. محمد حامد", rating: 4, comment: "محتوى غني ودقيق، الحدود والتوهجات في التصميم رائعة.", created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString() }
+        ])
+        setLoading(false)
+        return
+      }
+
+      // Supabase Fetch
       const supabase = createClient()
       const { data } = await supabase
         .from('products')
@@ -39,29 +240,50 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           price: Number(data.price),
           category: data.category,
           description: data.description || "",
-          longDescription: data.description || "هذا الكورس مصمم ليأخذك من الصفر في عالم التعلم إلى مستوى متقدم. ستتعلم كل شيء بدءاً من المفاهيم الأساسية وصولاً إلى التطبيق العملي. يركز الكورس على التطبيق العملي أكثر من النظري لضمان استعدادك لسوق العمل.",
+          longDescription: data.description || "هذا الكورس مصمم ليأخذك من الصفر في عالم التعلم إلى مستوى متقدم. ستتعلم كل شيء بدءاً من المفاهيم الأساسية وصولاً إلى التطبيق العملي.",
           image: data.cover_image || "/course.png",
           features: data.features || [],
           faqs: data.faqs || [],
           reviews: data.review_count || 0,
           rating: data.rating || 0
         })
-      }
-      
-      const { data: reviewsData } = await supabase
-        .from('product_reviews')
-        .select('*')
-        .eq('product_id', id)
-        .order('created_at', { ascending: false })
-      
-      if (reviewsData) {
-        setReviewsList(reviewsData)
+
+        const { data: reviewsData } = await supabase
+          .from('product_reviews')
+          .select('*')
+          .eq('product_id', id)
+          .order('created_at', { ascending: false })
+        
+        if (reviewsData) {
+          setReviewsList(reviewsData)
+        }
+      } else {
+        // Ultimate fallback to Dr. Feryal's book if database is empty/corrupt
+        const fallback = mockProductsData["3a93b423-b6eb-4cbc-8020-3b04966be030"]
+        setProduct(fallback)
       }
       
       setLoading(false)
     }
     fetchProduct()
   }, [id])
+
+  // Video progress simulator
+  useEffect(() => {
+    let interval: any
+    if (isVideoPlaying) {
+      interval = setInterval(() => {
+        setVideoProgress((prev) => {
+          if (prev >= 100) {
+            setIsVideoPlaying(false)
+            return 0
+          }
+          return prev + 1
+        })
+      }, 150)
+    }
+    return () => clearInterval(interval)
+  }, [isVideoPlaying])
 
   const handleAddToCart = () => {
     if (!product) return
@@ -70,11 +292,46 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     setTimeout(() => setAdded(false), 2000)
   }
 
+  // Check if ID is a Database UUID
+  const isUUID = (str: string) => {
+    return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(str)
+  }
+
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!reviewName || reviewRating < 1 || reviewRating > 5) return
     setIsSubmittingReview(true)
     
+    // If it's a mock product, simulate writing to database locally
+    if (!isUUID(id)) {
+      setTimeout(() => {
+        const newReview = {
+          id: `r_${Date.now()}`,
+          reviewer_name: reviewName,
+          rating: reviewRating,
+          comment: reviewComment,
+          created_at: new Date().toISOString()
+        }
+        setReviewsList(prev => [newReview, ...prev])
+        setReviewSuccess(true)
+        setReviewName("")
+        setReviewComment("")
+        setReviewRating(5)
+        
+        // Update product average rating locally
+        setProduct((prev: any) => {
+          const newCount = (prev.reviews || 0) + 1
+          const newRating = Number((((prev.rating || 0) * prev.reviews + reviewRating) / newCount).toFixed(2))
+          return { ...prev, reviews: newCount, rating: newRating }
+        })
+
+        setIsSubmittingReview(false)
+        setTimeout(() => setReviewSuccess(false), 3000)
+      }, 800)
+      return
+    }
+
+    // Call Supabase API for actual products
     const supabase = createClient()
     const { error } = await supabase.from('product_reviews').insert({
       product_id: id,
@@ -110,144 +367,609 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     setIsSubmittingReview(false)
   }
 
-  const faqs = product?.faqs || []
-
   if (loading) {
     return (
-      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center bg-black">
+        <Loader2 className="w-8 h-8 animate-spin text-white" />
       </div>
     )
   }
 
   if (!product) {
     return (
-      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center">
-        <h1 className="text-2xl font-bold mb-4">لم يتم العثور على المنتج</h1>
-        <Link href="/store" className="text-primary hover:underline">العودة للمتجر</Link>
+      <div className="flex flex-col min-h-screen pt-32 pb-20 items-center justify-center bg-black text-white">
+        <h1 className="text-2xl font-serif mb-4">لم يتم العثور على المنتج</h1>
+        <Link href="/store" className="text-muted-foreground hover:text-white underline">العودة للمتجر</Link>
       </div>
     )
   }
 
+  const faqs = product?.faqs || []
+
+  // Mock Book Pages Contents
+  const getBookPageContent = () => {
+    switch (bookPage) {
+      case 1:
+        return {
+          title: "الفصل الأول: مدخل للذكاء الاصطناعي الجنائي",
+          text: "الذكاء الاصطناعي الجنائي هو العلم الذي يدرس كيفية توظيف خوارزميات التعلم الآلي والشبكات العصبية العميقة لاستخلاص الأدلة الرقمية من الأجهزة والشبكات. تكمن الأهمية القصوى لهذا التداخل في تسريع وتيرة التحقيقات وتقليل الأخطاء البشرية الناتجة عن مراجعة تيرابايتات من البيانات الرقمية يدوياً..."
+        }
+      case 2:
+        return {
+          title: "الفصل الثاني: حجية الأدلة الرقمية",
+          text: "وفقاً للمادة 5 من قانون التوقيع الإلكتروني والمعاملات الإلكترونية العراقي، تحظى الرسائل والمستندات الرقمية بحجية قانونية كاملة إذا ثبتت سلامة النظام المصدر لها. عند استخدام الذكاء الاصطناعي، يجب إثبات أن الخوارزمية المستخدمة تتبع معايير هندسية موثقة وخالية من التحيز الحسابي..."
+        }
+      case 3:
+        return {
+          title: "الفصل الثالث: الشبكات العصبية العميقة",
+          text: "الشبكات العصبية الاصطناعية (ANN) تحاكي العقل البشري في تحديد الأنماط. في الأدلة الجنائية، تُستخدم الشبكات لتصنيف البصمات، التعرف على الوجوه في لقطات الكاميرات التالفة، وفحص البصمات الصوتية للكشف عن التزييف العميق (Deepfakes) الذي يهدد مصداقية الأدلة السمعية والبصرية..."
+        }
+      case 4:
+        return {
+          title: "الفصل الرابع: تحديات وضمانات التحقيق",
+          text: "أبرز تحديات الذكاء الاصطناعي في القضاء هي مشكلة الصندوق الأسود (Black Box)، حيث يصعب تتبع كيفية اتخاذ الخوارزمية للقرار. يوصي هذا الدليل بتبني أنظمة الذكاء الاصطناعي القابلة للتفسير (XAI) لتمكين حقوق الدفاع من مناقشة الأدلة الجنائية بوضوح أمام القضاة..."
+        }
+      case 5:
+        return {
+          title: "الفصل الخامس: التوصيات الإجرائية للمحاكم",
+          text: "نوصي بتشكيل لجان خبراء مشتركة (تقنيين وقانونيين) لفحص البرمجيات الجنائية قبل اعتماد مخرجاتها في الأحكام. كما يتعين تدريب القضاة على أساسيات البيانات الرقمية وحرية القاضي في تكوين عقيدته بناءً على يقين تقني لا يقبل الشك..."
+        }
+      default:
+        return { title: "", text: "" }
+    }
+  }
+
+  const bookContent = getBookPageContent()
+
+  // Dynamic color configuration for Config playground mockup
+  const getCfgColorClass = () => {
+    switch (cfgColor) {
+      case "blue": return "bg-blue-500"
+      case "emerald": return "bg-emerald-500"
+      default: return "bg-purple-600"
+    }
+  }
+
+  const getCfgTextClass = () => {
+    switch (cfgColor) {
+      case "blue": return "text-blue-400"
+      case "emerald": return "text-emerald-400"
+      default: return "text-purple-400"
+    }
+  }
+
   return (
-    <div className="flex flex-col min-h-screen pt-32 pb-20">
-      <div className="container mx-auto px-6 max-w-7xl">
+    <div className="flex flex-col min-h-screen bg-black text-white pt-32 pb-20 relative">
+      <div className="absolute top-0 left-1/3 w-[600px] h-[600px] glow-blue rounded-full blur-[140px] opacity-10 pointer-events-none z-0"></div>
+      
+      <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
-        <Link href="/store" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 font-medium">
-          <ArrowRight className="w-4 h-4" />
-          <span>العودة للمتجر</span>
+        <Link href="/store" className="inline-flex items-center gap-2 text-muted-foreground hover:text-white transition-colors mb-8 text-xs font-semibold">
+          <ArrowRight className="w-3.5 h-3.5" />
+          <span>العودة للمعرض الرقمي</span>
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-          {/* Product Gallery */}
+        {/* Top Section: Title & Gallery */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
+          
+          {/* Gallery - Column span 5 */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="space-y-4"
+            className="lg:col-span-5 space-y-4"
           >
-            <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-secondary to-background border border-border shadow-lg flex items-center justify-center overflow-hidden relative">
+            <div className="aspect-[4/3] rounded-2xl bg-white/[0.02] border border-white/[0.08] flex items-center justify-center overflow-hidden relative shadow-2xl">
               <Image src={product.image} alt={product.name} fill className="object-cover" />
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            
+            <div className="grid grid-cols-3 gap-3">
               {[1, 2, 3].map(i => (
-                <div key={i} className="aspect-[4/3] rounded-xl bg-secondary/50 border border-border flex items-center justify-center cursor-pointer hover:bg-secondary transition-colors relative overflow-hidden">
-                  <Image src={product.image} alt={product.name} fill className="object-cover opacity-50 hover:opacity-100 transition-opacity" />
+                <div key={i} className="aspect-[4/3] rounded-xl bg-white/[0.01] border border-white/[0.04] flex items-center justify-center cursor-pointer hover:bg-white/[0.03] transition-colors relative overflow-hidden group">
+                  <Image src={product.image} alt={product.name} fill className="object-cover opacity-30 group-hover:opacity-80 transition-opacity" />
                 </div>
               ))}
             </div>
           </motion.div>
 
-          {/* Product Info */}
+          {/* Info - Column span 7 */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex flex-col"
+            className="lg:col-span-7 flex flex-col justify-between"
           >
-            <div className="mb-6">
+            <div>
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex items-center text-amber-500">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className={`w-4 h-4 ${star <= Math.round(product.rating || 0) ? "fill-current" : "fill-transparent text-muted-foreground"}`} />
-                  ))}
+                  <Star className="w-4 h-4 fill-current" />
                 </div>
-                <span className="text-sm font-medium">{product.rating}</span>
-                <span className="text-sm text-muted-foreground">({product.reviews} تقييم)</span>
+                <span className="text-sm font-semibold">{product.rating ? product.rating.toFixed(1) : "0.0"}</span>
+                <span className="text-xs text-muted-foreground">({product.reviews || 0} تقييم)</span>
+                <span className="text-white/20">•</span>
+                <span className="text-xs text-muted-foreground font-semibold uppercase">{product.category}</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">{product.name}</h1>
-              <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-6">{product.price.toLocaleString("ar-IQ")} د.ع</p>
-              <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+              
+              <h1 className="text-3xl md:text-5xl font-serif text-white tracking-tight mb-4 leading-tight">{product.name}</h1>
+              
+              <div className="flex items-baseline gap-2 mb-6">
+                <span className="text-3xl font-bold text-white">{(product.price).toLocaleString("ar-IQ")}</span>
+                <span className="text-xs text-muted-foreground font-bold">د.ع</span>
+              </div>
+              
+              <p className="text-muted-foreground text-sm leading-relaxed mb-8">
                 {product.description}
               </p>
             </div>
 
+            {/* Feature List */}
             {product.features && product.features.length > 0 && (
-              <div className="space-y-4 mb-10 bg-secondary/20 p-6 rounded-2xl border border-border">
-                <h3 className="font-bold text-sm uppercase tracking-wider text-muted-foreground mb-4">ماذا يشمل هذا المنتج؟</h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-3 mb-8 bg-white/[0.02] border border-white/[0.04] p-5 rounded-2xl">
+                <h3 className="font-bold text-[10px] uppercase tracking-wider text-muted-foreground mb-3">ما الذي يشتمل عليه الشراء؟</h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {product.features.map((feature: string, i: number) => (
-                    <li key={i} className="flex items-center gap-2 text-sm font-bold">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Check className="w-4 h-4 text-primary" />
+                    <li key={i} className="flex items-center gap-2 text-xs font-semibold text-white/90">
+                      <div className="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-3.5 h-3.5 text-white" />
                       </div>
-                      {feature}
+                      <span className="truncate">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
 
-            <div className="mt-auto flex flex-col gap-4">
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
               <button 
                 onClick={handleAddToCart}
                 disabled={added}
-                className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all duration-300 shadow-lg ${
+                className={`w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-lg ${
                   added 
                     ? "bg-emerald-500 text-white shadow-emerald-500/20" 
-                    : "bg-primary text-primary-foreground hover:opacity-90 shadow-primary/20"
+                    : "bg-white text-black hover:bg-neutral-100 shadow-white/5"
                 }`}
               >
                 {added ? (
                   <>
-                    <Check className="w-5 h-5" />
+                    <Check className="w-4 h-4" />
                     <span>تمت الإضافة للسلة</span>
                   </>
                 ) : (
                   <>
-                    <ShoppingCart className="w-5 h-5" />
-                    <span>أضف للسلة — {product.price.toLocaleString("ar-IQ")} د.ع</span>
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>أضف للسلة — {(product.price).toLocaleString("ar-IQ")} د.ع</span>
                   </>
                 )}
               </button>
-              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mt-2">
-                <Shield className="w-4 h-4" />
-                <span>ضمان استرجاع لمدة 14 يوماً. تسوق بأمان تام.</span>
+              
+              <div className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-1.5 text-[10px] text-muted-foreground border border-white/[0.04] bg-white/[0.01] rounded-xl px-4 py-2">
+                <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                <span>ضمان أمان فوري 100%</span>
               </div>
             </div>
+
           </motion.div>
         </div>
 
+        {/* Middle Section: Interactive Preview Sandbox (Center Stage) */}
+        <section className="border-t border-white/[0.06] pt-16 mb-20">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase bg-white/5 px-3 py-1 rounded-full border border-white/10">البيئة التفاعلية</span>
+            <h2 className="text-2xl md:text-3xl font-serif text-white mt-4 mb-2">معاينة تفاعلية حية للمنتج</h2>
+            <p className="text-xs text-muted-foreground">اختبر جودة ومحتويات هذا المنتج الرقمي قبل الشراء مباشرة من متصفحك.</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            {/* Conditional Render based on Category */}
+            
+            {/* 1. BOOK READER SANDBOX */}
+            {product.category === "كتب إلكترونية" && (
+              <div className="rounded-2xl border border-white/[0.08] bg-[#07070a]/90 overflow-hidden flex flex-col shadow-2xl relative">
+                {/* Header */}
+                <div className="bg-[#0b0b0d] border-b border-white/[0.06] px-5 py-3 flex justify-between items-center z-10">
+                  <div className="flex items-center gap-2.5">
+                    <BookOpen className="w-4 h-4 text-white" />
+                    <span className="text-xs font-bold text-white">قارئ الكتب المدمج | نسخة تجريبية</span>
+                  </div>
+                  
+                  {/* Search word inside book */}
+                  <div className="relative hidden md:flex items-center bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 text-[10px]">
+                    <input
+                      type="text"
+                      placeholder="ابحث عن كلمة..."
+                      value={bookSearch}
+                      onChange={(e) => setBookSearch(e.target.value)}
+                      className="bg-transparent border-none outline-none w-28 text-white focus:ring-0 placeholder:text-muted-foreground text-right"
+                    />
+                  </div>
+
+                  {/* Size adjustments */}
+                  <div className="flex items-center gap-1.5">
+                    <button 
+                      onClick={() => setBookFontSize("sm")} 
+                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "sm" ? "bg-white text-black font-bold" : "bg-white/5 hover:bg-white/10"}`}
+                    >
+                      A-
+                    </button>
+                    <button 
+                      onClick={() => setBookFontSize("md")} 
+                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "md" ? "bg-white text-black font-bold" : "bg-white/10"}`}
+                    >
+                      A
+                    </button>
+                    <button 
+                      onClick={() => setBookFontSize("lg")} 
+                      className={`w-6 h-6 rounded flex items-center justify-center text-[10px] transition-colors ${bookFontSize === "lg" ? "bg-white text-black font-bold" : "bg-white/5 hover:bg-white/10"}`}
+                    >
+                      A+
+                    </button>
+                  </div>
+                </div>
+
+                {/* Book Page Content */}
+                <div className={`p-8 md:p-12 min-h-[220px] transition-all flex flex-col justify-between ${
+                  bookFontSize === "sm" ? "text-xs" : bookFontSize === "md" ? "text-sm" : "text-base"
+                }`}>
+                  <div className="space-y-4">
+                    <h4 className="font-serif font-bold text-white border-b border-white/[0.04] pb-2 text-lg">{bookContent.title}</h4>
+                    <p className="text-muted-foreground leading-relaxed text-right whitespace-pre-line">
+                      {bookSearch && bookContent.text.includes(bookSearch) ? (
+                        // Highlight searched text
+                        (() => {
+                          const parts = bookContent.text.split(bookSearch)
+                          return (
+                            <>
+                              {parts[0]}
+                              <span className="bg-yellow-500/30 text-yellow-300 font-bold border border-yellow-500/20 px-1 rounded">{bookSearch}</span>
+                              {parts[1]}
+                            </>
+                          )
+                        })()
+                      ) : (
+                        bookContent.text
+                      )}
+                    </p>
+                  </div>
+
+                  <div className="flex justify-between items-center mt-10 pt-4 border-t border-white/[0.04]">
+                    <span className="text-[10px] text-muted-foreground">الصفحة {bookPage} من 5</span>
+                    <span className="text-[10px] text-muted-foreground">© د. فريال إبراهيم الظفيري</span>
+                  </div>
+                </div>
+
+                {/* Footer Controls */}
+                <div className="bg-[#0b0b0d] border-t border-white/[0.06] px-5 py-3.5 flex justify-between items-center">
+                  <button
+                    disabled={bookPage === 1}
+                    onClick={() => setBookPage(prev => Math.max(prev - 1, 1))}
+                    className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    السابق
+                  </button>
+                  
+                  <div className="flex gap-1.5">
+                    {[1, 2, 3, 4, 5].map(p => (
+                      <button
+                        key={p}
+                        onClick={() => setBookPage(p)}
+                        className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${
+                          bookPage === p ? "bg-white text-black" : "bg-white/5 hover:bg-white/10 text-muted-foreground"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    disabled={bookPage === 5}
+                    onClick={() => setBookPage(prev => Math.min(prev + 1, 5))}
+                    className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    التالي
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* 2. CLASSROOM WORKSPACE SANDBOX */}
+            {product.category === "كورسات أونلاين" && (
+              <div className="rounded-2xl border border-white/[0.08] bg-[#07070a]/90 overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl">
+                
+                {/* Left: Lessons Sidebar (4 cols) */}
+                <div className="md:col-span-4 bg-[#0a0a0c] border-b md:border-b-0 md:border-l border-white/[0.06] p-4 flex flex-col justify-between min-h-[300px]">
+                  <div>
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-muted-foreground mb-4 text-right">مقرر الدورة التدريبية</h3>
+                    <div className="space-y-1">
+                      {[
+                        { id: 1, title: "1. أساسيات وتأمين الشبكات", dur: "14 دقيقة", unlocked: true },
+                        { id: 2, title: "2. فحص الهجمات السيبرانية", dur: "22 دقيقة", unlocked: false },
+                        { id: 3, title: "3. استخلاص الأدلة الرقمية", dur: "18 دقيقة", unlocked: false },
+                        { id: 4, title: "4. الجوانب الإجرائية بالمحكمة", dur: "25 دقيقة", unlocked: false }
+                      ].map(lesson => (
+                        <button
+                          key={lesson.id}
+                          disabled={!lesson.unlocked}
+                          onClick={() => { setActiveLesson(lesson.id); setIsVideoPlaying(false); setVideoProgress(0); }}
+                          className={`w-full text-right px-3 py-2 rounded-xl text-xs flex justify-between items-center transition-all ${
+                            activeLesson === lesson.id
+                              ? "bg-white text-black font-bold"
+                              : "hover:bg-white/5 text-muted-foreground disabled:opacity-40"
+                          }`}
+                        >
+                          <span>{lesson.title}</span>
+                          <span className="text-[9px] font-normal opacity-60">{lesson.unlocked ? lesson.dur : "مغلق 🔒"}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-white/[0.04] text-[10px] text-muted-foreground text-center">
+                    شراء الدورة يفتح الوصول لجميع الشروحات
+                  </div>
+                </div>
+
+                {/* Right: Video Workspace (8 cols) */}
+                <div className="md:col-span-8 p-6 flex flex-col justify-between">
+                  <div>
+                    <h4 className="font-bold text-xs text-muted-foreground mb-2">معاينة الدرس المفتوح</h4>
+                    
+                    {/* Simulated video player */}
+                    <div className="aspect-video bg-black border border-white/[0.08] rounded-xl overflow-hidden relative flex items-center justify-center group">
+                      {isVideoPlaying ? (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-zinc-900/40">
+                          <Loader2 className="w-8 h-8 animate-spin text-white mb-2" />
+                          <span className="text-xs font-mono text-white/80">تشغيل العينة... {videoProgress}%</span>
+                          
+                          <button 
+                            onClick={() => setIsVideoPlaying(false)}
+                            className="mt-4 px-3 py-1 bg-white/10 hover:bg-white/20 border border-white/20 text-[9px] font-bold rounded-lg"
+                          >
+                            إيقاف مؤقت
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/90 p-4">
+                          <button 
+                            onClick={() => { setIsVideoPlaying(true); }}
+                            className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
+                          >
+                            <Play className="w-6 h-6 fill-current translate-x-[2px]" />
+                          </button>
+                          <span className="text-xs font-bold text-white mt-4">شغّل عينة من الدرس الأول (14 دقيقة)</span>
+                        </div>
+                      )}
+
+                      {/* Video progress indicator bar */}
+                      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10">
+                        <div className="h-full bg-white" style={{ width: `${videoProgress}%` }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dynamic Interactive Quiz widget */}
+                  <div className="mt-6 bg-white/[0.02] border border-white/[0.04] p-4 rounded-xl">
+                    <h5 className="text-xs font-bold text-white mb-3 flex items-center gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>اختبار سريع: ما الخطوة الأولى للتحقيق الرقمي؟</span>
+                    </h5>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <button
+                        onClick={() => setQuizAnswer("correct")}
+                        className={`p-2.5 text-right rounded-lg border text-[11px] font-bold transition-all ${
+                          quizAnswer === "correct"
+                            ? "bg-emerald-500/10 border-emerald-500 text-emerald-400"
+                            : "bg-white/[0.01] border-white/[0.04] text-muted-foreground hover:text-white"
+                        }`}
+                      >
+                        أ) جمع وتوثيق الأدلة مع الحفاظ على سلامتها
+                      </button>
+                      <button
+                        onClick={() => setQuizAnswer("incorrect")}
+                        className={`p-2.5 text-right rounded-lg border text-[11px] font-bold transition-all ${
+                          quizAnswer === "incorrect"
+                            ? "bg-red-500/10 border-red-500 text-red-400"
+                            : "bg-white/[0.01] border-white/[0.04] text-muted-foreground hover:text-white"
+                        }`}
+                      >
+                        ب) تعديل وفحص الملفات المشبوهة فوراً
+                      </button>
+                    </div>
+
+                    {quizAnswer && (
+                      <div className="mt-3 text-[10px] leading-relaxed">
+                        {quizAnswer === "correct" ? (
+                          <span className="text-emerald-400">✓ إجابة صحيحة! الحفاظ على سلامة الدليل وتوثيقه هي الخطوة الأولى لمنع الطعن في قيمته القانونية.</span>
+                        ) : (
+                          <span className="text-red-400">✗ إجابة خاطئة. تعديل الملفات دون توثيق يفسد سلامتها القانونية أمام المحكمة. جرب الخيار (أ).</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            )}
+
+            {/* 3. SOFTWARE CONFIGURATION PLAYGROUND */}
+            {product.category === "برامج" && (
+              <div className="rounded-2xl border border-white/[0.08] bg-[#07070a]/90 overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl">
+                {/* Left: Controls (5 cols) */}
+                <div className="md:col-span-5 bg-[#0a0a0c] border-b md:border-b-0 md:border-l border-white/[0.06] p-6 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Settings className="w-4 h-4 text-white" />
+                      <span className="text-xs font-bold text-white">لوحة تخصيص القالب</span>
+                    </div>
+
+                    <p className="text-[11px] text-muted-foreground leading-relaxed mb-6">
+                      عدّل خصائص القالب البرمجي واشهد النتيجة فوراً على لوحة تحكم النموذج التفاعلي:
+                    </p>
+
+                    <div className="space-y-4">
+                      {/* Theme toggle */}
+                      <div>
+                        <label className="block text-[10px] text-muted-foreground mb-1.5">مظهر لوحة التحكم:</label>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => setCfgTheme("dark")}
+                            className={`flex-1 py-1 px-2 border rounded-lg text-[10px] font-bold transition-all ${
+                              cfgTheme === "dark" ? "bg-white text-black" : "bg-white/5 border-white/10"
+                            }`}
+                          >
+                            داكن
+                          </button>
+                          <button
+                            onClick={() => setCfgTheme("light")}
+                            className={`flex-1 py-1 px-2 border rounded-lg text-[10px] font-bold transition-all ${
+                              cfgTheme === "light" ? "bg-white text-black" : "bg-white/5 border-white/10"
+                            }`}
+                          >
+                            مضيء
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Primary colors */}
+                      <div>
+                        <label className="block text-[10px] text-muted-foreground mb-1.5">اللون الأساسي للعلامة:</label>
+                        <div className="flex gap-1.5">
+                          {["purple", "blue", "emerald"].map((col) => (
+                            <button
+                              key={col}
+                              onClick={() => setCfgColor(col as any)}
+                              className={`flex-1 py-1 px-1.5 border rounded-lg text-[10px] font-semibold transition-all ${
+                                cfgColor === col 
+                                  ? "border-white text-white bg-white/10" 
+                                  : "border-white/5 text-muted-foreground bg-white/5"
+                              }`}
+                            >
+                              {col === "purple" ? "أوركيد" : col === "blue" ? "أزرق" : "أخضر"}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Toggle notification */}
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-[10px] text-muted-foreground">تفعيل لوحة الإشعارات:</span>
+                        <button
+                          onClick={() => setCfgNotifications(prev => !prev)}
+                          className={`w-10 h-5 rounded-full relative transition-colors ${
+                            cfgNotifications ? "bg-white" : "bg-white/15"
+                          }`}
+                        >
+                          <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-black transition-all ${
+                            cfgNotifications ? "right-5" : "right-1"
+                          }`} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Config code generator */}
+                  <div className="pt-6 border-t border-white/[0.04]">
+                    <div className="flex items-center gap-1.5 text-xs text-white mb-2">
+                      <Code className="w-3.5 h-3.5 text-muted-foreground" />
+                      <span className="font-mono text-[9px]">config.json</span>
+                    </div>
+                    <pre className="bg-black/60 border border-white/[0.06] p-2.5 rounded-lg text-[9px] font-mono text-left select-all overflow-x-auto text-muted-foreground leading-normal" dir="ltr">
+{`{
+  "theme": "${cfgTheme}",
+  "primary": "${cfgColor}",
+  "notifications": ${cfgNotifications}
+}`}
+                    </pre>
+                  </div>
+                </div>
+
+                {/* Right: Mockup Render (7 cols) */}
+                <div className="md:col-span-7 p-6 flex items-center justify-center min-h-[300px]">
+                  <div className={`w-full max-w-sm rounded-xl border border-white/[0.08] shadow-2xl overflow-hidden font-sans transition-all duration-300 flex flex-col h-60 ${
+                    cfgTheme === "dark" ? "bg-zinc-950 text-white" : "bg-white text-zinc-900 border-zinc-200"
+                  }`}>
+                    {/* Simulated app header */}
+                    <div className={`px-4 py-2 border-b flex justify-between items-center ${
+                      cfgTheme === "dark" ? "border-zinc-800 bg-zinc-900/50" : "border-zinc-100 bg-zinc-50"
+                    }`}>
+                      <div className="flex items-center gap-1.5">
+                        <div className={`w-3 h-3 rounded-full ${getCfgColorClass()}`} />
+                        <span className="text-[9px] font-bold tracking-wider">Fikr SaaS Dashboard</span>
+                      </div>
+                      
+                      {cfgNotifications && (
+                        <Bell className={`w-3.5 h-3.5 ${getCfgTextClass()} animate-bounce`} />
+                      )}
+                    </div>
+
+                    {/* Simulated body */}
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
+                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-50 border-neutral-100"
+                        }`}>
+                          <span className="text-[8px] text-muted-foreground">المبيعات</span>
+                          <span className="text-xs font-bold mt-1">1,248</span>
+                        </div>
+                        <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
+                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-50 border-neutral-100"
+                        }`}>
+                          <span className="text-[8px] text-muted-foreground">التنزيلات</span>
+                          <span className="text-xs font-bold mt-1">942</span>
+                        </div>
+                        <div className={`p-2.5 rounded-lg border flex flex-col justify-between ${
+                          cfgTheme === "dark" ? "bg-white/[0.02] border-white/5" : "bg-neutral-50 border-neutral-100"
+                        }`}>
+                          <span className="text-[8px] text-muted-foreground">الزوار</span>
+                          <span className="text-xs font-bold mt-1">5,820</span>
+                        </div>
+                      </div>
+
+                      {/* Bar graph mock */}
+                      <div className="h-16 flex items-end gap-1.5 px-2 mt-4">
+                        {[30, 60, 45, 80, 50, 95, 70].map((h, i) => (
+                          <div 
+                            key={i} 
+                            className={`w-full rounded-t-sm transition-all duration-300 ${getCfgColorClass()}`} 
+                            style={{ height: `${h}%`, opacity: 0.3 + (i * 0.1) }} 
+                          />
+                        ))}
+                      </div>
+
+                      <div className="text-[8px] text-muted-foreground text-center mt-2">
+                        قالب Next.js تفاعلي يدعم كامل إعدادات الألوان والمظهر بسلاسة.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+          </div>
+        </section>
+
         {/* Detailed Description & FAQ */}
-        {(product.description || faqs.length > 0) && (
-          <div className="border-t border-border pt-20 grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className={faqs.length > 0 ? "lg:col-span-2" : "lg:col-span-3"}>
-              <h2 className="text-3xl font-bold mb-6">نظرة عامة على المنتج</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground leading-relaxed">
-                <p>{product.description}</p>
+        {(product.longDescription || faqs.length > 0) && (
+          <div className="border-t border-white/[0.06] pt-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className={faqs.length > 0 ? "lg:col-span-8" : "lg:col-span-12"}>
+              <h2 className="text-2xl font-serif text-white mb-5">نظرة عامة مفصلة</h2>
+              <div className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground leading-relaxed text-right whitespace-pre-line">
+                {product.longDescription}
               </div>
             </div>
 
             {faqs.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold mb-6">الأسئلة الشائعة</h2>
-                <div className="space-y-4">
+              <div className="lg:col-span-4">
+                <h2 className="text-xl font-serif text-white mb-5">الأسئلة الشائعة</h2>
+                <div className="space-y-3">
                   {faqs.map((faq: { q: string; a: string }, i: number) => (
-                    <div key={i} className="glass border border-border rounded-xl overflow-hidden">
+                    <div key={i} className="bg-white/[0.01] border border-white/[0.04] rounded-xl overflow-hidden">
                       <button 
                         onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                        className="w-full px-6 py-4 flex items-center justify-between font-bold text-right hover:bg-secondary/50 transition-colors"
+                        className="w-full px-5 py-3 flex items-center justify-between text-xs font-bold text-right hover:bg-white/[0.02] transition-colors"
                       >
                         <span>{faq.q}</span>
-                        <ChevronDown className={`w-5 h-5 transition-transform duration-300 text-primary ${openFaq === i ? "rotate-180" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 text-white ${openFaq === i ? "rotate-180" : ""}`} />
                       </button>
                       <AnimatePresence>
                         {openFaq === i && (
@@ -255,7 +977,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            className="px-6 pb-4 text-sm text-muted-foreground leading-relaxed"
+                            className="px-5 pb-3.5 text-xs text-muted-foreground leading-relaxed text-right border-t border-white/[0.02] pt-2"
                           >
                             {faq.a}
                           </motion.div>
@@ -270,67 +992,70 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         )}
 
         {/* Reviews Section */}
-        <div className="border-t border-border pt-20 mt-20">
-          <h2 className="text-3xl font-bold mb-12">تقييمات العملاء</h2>
+        <div className="border-t border-white/[0.06] pt-16 mt-16">
+          <h2 className="text-2xl font-serif text-white mb-10 text-right">تقييمات مجتمعنا</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-1">
-              <div className="glass border border-border p-6 rounded-2xl sticky top-24">
-                <h3 className="text-xl font-bold mb-6">أضف تقييمك</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            {/* Submit review */}
+            <div className="lg:col-span-4">
+              <div className="bg-white/[0.01] border border-white/[0.04] p-6 rounded-2xl sticky top-24">
+                <h3 className="text-sm font-bold text-white mb-4">أضف رأيك الصادق</h3>
                 <form onSubmit={handleReviewSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-muted-foreground">الاسم</label>
+                    <label className="block text-[10px] text-muted-foreground mb-1.5">الاسم</label>
                     <input 
                       type="text" 
                       required 
                       value={reviewName}
                       onChange={(e) => setReviewName(e.target.value)}
-                      className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors" 
+                      className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-2.5 outline-none focus:border-white/20 text-xs transition-colors" 
                       placeholder="اسمك الكريم" 
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-muted-foreground">التقييم</label>
-                    <div className="flex items-center gap-2">
+                    <label className="block text-[10px] text-muted-foreground mb-1.5">معدل التقييم بالنجوم</label>
+                    <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map(star => (
                         <button
                           type="button"
                           key={star}
                           onClick={() => setReviewRating(star)}
-                          className="focus:outline-none transition-transform hover:scale-110"
+                          className="focus:outline-none transition-transform hover:scale-105"
                         >
-                          <Star className={`w-8 h-8 ${star <= reviewRating ? "fill-amber-500 text-amber-500" : "fill-transparent text-muted-foreground"}`} />
+                          <Star className={`w-6 h-6 ${star <= reviewRating ? "fill-amber-500 text-amber-500" : "fill-transparent text-muted-foreground"}`} />
                         </button>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-muted-foreground">تعليقك (اختياري)</label>
+                    <label className="block text-[10px] text-muted-foreground mb-1.5">رأيك حول المنتج</label>
                     <textarea 
-                      rows={4} 
+                      rows={3} 
                       value={reviewComment}
                       onChange={(e) => setReviewComment(e.target.value)}
-                      className="w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors resize-none" 
-                      placeholder="ما رأيك في هذا المنتج؟" 
+                      className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl px-4 py-2.5 outline-none focus:border-white/20 text-xs transition-colors resize-none" 
+                      placeholder="اكتب ملاحظاتك وتقييمك هنا..." 
                     />
                   </div>
+                  
                   <button 
                     type="submit" 
                     disabled={isSubmittingReview || !reviewName}
-                    className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                    className="w-full bg-white text-black py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-neutral-100 transition-colors disabled:opacity-50"
                   >
-                    {isSubmittingReview ? <Loader2 className="w-5 h-5 animate-spin" /> : (reviewSuccess ? <Check className="w-5 h-5" /> : <Send className="w-5 h-5" />)}
-                    {isSubmittingReview ? "جاري الإرسال..." : (reviewSuccess ? "شكراً لتقييمك!" : "إرسال التقييم")}
+                    {isSubmittingReview ? <Loader2 className="w-4 h-4 animate-spin" /> : (reviewSuccess ? <Check className="w-4 h-4" /> : <Send className="w-4 h-4" />)}
+                    {isSubmittingReview ? "جاري الحفظ..." : (reviewSuccess ? "شكراً لمشاركتنا تقييمك!" : "إرسال التقييم")}
                   </button>
                 </form>
               </div>
             </div>
             
-            <div className="lg:col-span-2 space-y-6">
+            {/* Reviews history */}
+            <div className="lg:col-span-8 space-y-4">
               {reviewsList.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground bg-secondary/20 rounded-2xl border border-border border-dashed">
-                  <Star className="w-12 h-12 mb-4 opacity-20" />
-                  <p>لا توجد تقييمات بعد. كن أول من يقيّم هذا المنتج!</p>
+                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground bg-white/[0.01] rounded-2xl border border-white/[0.04] border-dashed">
+                  <Star className="w-10 h-10 mb-3 opacity-20 text-white" />
+                  <p className="text-xs">لا توجد تقييمات سابقة بعد. شاركنا تقييمك لتكون الأول!</p>
                 </div>
               ) : (
                 reviewsList.map(review => (
@@ -338,28 +1063,28 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     key={review.id} 
-                    className="p-6 rounded-2xl bg-secondary/30 border border-border"
+                    className="p-5 rounded-2xl bg-white/[0.01] border border-white/[0.04]"
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xl">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-white/5 text-white flex items-center justify-center font-bold text-sm">
                           {review.reviewer_name.charAt(0)}
                         </div>
                         <div>
-                          <h4 className="font-bold text-lg">{review.reviewer_name}</h4>
+                          <h4 className="font-bold text-xs">{review.reviewer_name}</h4>
                           <div className="flex items-center text-amber-500 mt-1">
                             {[1, 2, 3, 4, 5].map(star => (
-                              <Star key={star} className={`w-4 h-4 ${star <= review.rating ? "fill-current" : "fill-transparent text-muted-foreground"}`} />
+                              <Star key={star} className={`w-3 h-3 ${star <= review.rating ? "fill-current" : "fill-transparent text-muted-foreground"}`} />
                             ))}
                           </div>
                         </div>
                       </div>
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-[10px] text-muted-foreground">
                         {new Date(review.created_at).toLocaleDateString('ar-IQ')}
                       </span>
                     </div>
                     {review.comment && (
-                      <p className="text-muted-foreground leading-relaxed mt-4 bg-background/50 p-4 rounded-xl border border-border/50">
+                      <p className="text-muted-foreground text-xs leading-relaxed mt-4 bg-black/40 p-3.5 rounded-xl border border-white/[0.03] text-right">
                         {review.comment}
                       </p>
                     )}
